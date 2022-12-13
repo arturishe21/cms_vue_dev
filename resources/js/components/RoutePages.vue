@@ -5,7 +5,7 @@
         <edit v-show="isShow"
               :id="editId"
               :urlLoadData="urlLoadData"
-              :urlSave = "urlSave"
+              :urlSave = "urlForUpdate"
               @closeWindow="closeWindow"
               @loadData="loadData"></edit>
 
@@ -13,6 +13,7 @@
                 @closeWindow="isShowCreateWindow = false"
                 @loadData="loadData"
                 :url = $route.path
+                :urlCreate = "urlForCreate"
         ></create>
 
 
@@ -24,6 +25,7 @@
                    @sort="sort"
                    @clearOrder="clearOrder"
                    @loader="loader"
+                   @search="search"
         ></component>
     </div>
 </template>
@@ -81,8 +83,12 @@
                 return `${this.$route.path}/edit/` + this.editId
             },
 
-            urlSave() {
+            urlForUpdate() {
                 return `${this.$route.path}/save/` + this.editId
+            },
+
+            urlForCreate() {
+                return `${this.$route.path}/save`
             },
 
             component()
@@ -95,7 +101,7 @@
 
             sort (field) {
 
-                if (!field.isSortable || this.isLoad) {
+                if (!field.is_sortable || this.isLoad) {
                     return;
                 }
 
@@ -110,6 +116,16 @@
                         })
                     .then(response => {
                         this.loadData()
+                    });
+            },
+
+            search(filter) {
+                this.loader(true);
+
+                this.axios
+                    .post(`${this.$route.path}/filter`, filter)
+                    .then(response => {
+                      this.loadData()
                     });
             },
 
@@ -150,7 +166,7 @@
                         this.listItems = response.data.data;
                         this.title = response.data.title;
                         this.fields = response.data.fields;
-                        this.isSortable = response.data.isSortable;
+                        this.isSortable = response.data.is_sortable;
                         this.order = response.data.order;
                         document.title = this.title;
 

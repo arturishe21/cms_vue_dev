@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\PageInjection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 
 class PagesController extends Controller
 {
@@ -15,6 +16,7 @@ class PagesController extends Controller
             'fields' => $modelDefinition->definition->head(),
             'isSortable' => $modelDefinition->definition->getIsSortable(),
             'order' => $modelDefinition->definition->getOrderByJson(),
+            'filter' => $modelDefinition->definition->getFilter(),
             'component' => $modelDefinition->definition->component,
             'node' => $modelDefinition->definition->getThisNode()
         ]);
@@ -25,7 +27,7 @@ class PagesController extends Controller
         return $this->getDataForForm($modelDefinition);
     }
 
-    public function store(PageInjection $modelDefinition): JsonResponse
+    public function store(PageInjection $modelDefinition): void
     {
         $modelDefinition->definition->saveAddForm(request()->all());
     }
@@ -35,12 +37,9 @@ class PagesController extends Controller
         return $this->getDataForForm($modelDefinition);
     }
 
-    public function update(PageInjection $modelDefinition, $table, $id)
+    public function update(PageInjection $modelDefinition)
     {
-        $request = request()->all();
-        $request['id'] = $id;
-
-        $modelDefinition->definition->saveEditForm($request);
+        $modelDefinition->definition->saveEditForm(request()->all(), $modelDefinition->model);
     }
 
     public function destroy(PageInjection $modelDefinition): JsonResponse
@@ -65,7 +64,12 @@ class PagesController extends Controller
         session()->forget($modelDefinition->definition->getSessionKeyOrder());
     }
 
-    public function search(PageInjection $modelDefinition)
+    public function filter(PageInjection $modelDefinition): void
+    {
+        session()->put($modelDefinition->definition->getSessionKeyFilter(), request()->all());
+    }
+
+    public function search(PageInjection $modelDefinition): Collection
     {
         $field = $modelDefinition->definition->getAllFields()[request('key')];
 

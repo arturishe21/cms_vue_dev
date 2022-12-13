@@ -9,7 +9,6 @@
             </div>
             <!-- pulled right: nav area -->
             <div class="pull-right">
-
                 <div id="hide-menu" class="btn-header pull-right">
                     <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fal fa-bars"></i></a> </span>
                 </div>
@@ -25,15 +24,11 @@
                         </ul>
                     </li>
                 </ul>
-
             </div>
         </header>
-
     </div>
 </template>
-
 <script>
     export default {
-
     }
 </script>

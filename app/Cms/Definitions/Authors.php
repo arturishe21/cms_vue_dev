@@ -26,13 +26,13 @@ use Vis\Builder\Definitions\Resource;
 
 class Authors extends Resource
 {
-    public $model = \App\Models\Author::class;
-    public $title = 'Новости';
+    public string $model = \App\Models\Author::class;
+    public string $title = 'Новости';
 
-    protected $isSortable = true;
-    protected $orderBy = 'priority asc';
+    protected bool $isSortable = true;
+    protected string $orderBy = 'priority asc';
 
-    public function fields()
+    public function fields(): array
     {
         return [
             'test' => [
@@ -43,7 +43,7 @@ class Authors extends Resource
     }
 
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->preview()->delete()->clone();
     }

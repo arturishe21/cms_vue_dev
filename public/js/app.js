@@ -5387,8 +5387,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5473,9 +5471,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     data: function data() {
       return this.$store.getters.getData;
-    },
-    urlSave: function urlSave() {
-      return "".concat(this.urlCreate, "/save");
     }
   },
   methods: {
@@ -5486,7 +5481,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.commit('message', true);
-      this.axios.post(this.urlSave, this.data).then(function (response) {
+      this.axios.post(this.urlCreate, this.data).then(function (response) {
         _this.close();
 
         _this.$emit("loadData");
@@ -5733,10 +5728,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -5754,6 +5745,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuedraggable */ "./node_modules/vuedraggable/dist/vuedraggable.umd.js");
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5847,12 +5859,17 @@ __webpack_require__.r(__webpack_exports__);
     return {
       data: {},
       listItems: [],
-      openItemDropdown: false
+      openItemDropdown: false,
+      filter: {}
     };
   },
   mounted: function mounted() {
     this.data = this.info;
     this.listItems = this.info.data;
+
+    if (_typeof(this.data.filter) === 'object' && this.data.filter != '') {
+      this.filter = this.data.filter;
+    }
   },
   watch: {
     info: function info() {
@@ -5861,15 +5878,19 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    clearFilter: function clearFilter(key) {
+      this.filter[key] = '';
+      this.$emit('search', this.filter);
+    },
     openDropdown: function openDropdown(item) {
       this.openItemDropdown = this.openItemDropdown == item ? false : item;
     },
     checkOpenDropdown: function checkOpenDropdown(item) {
       return this.openItemDropdown == item;
     },
-    classForTh: function classForTh(field) {
+    classForThOrder: function classForThOrder(field) {
       return {
-        'sorting': field.isSortable,
+        'sorting': field.is_sortable,
         'sorting_desc': this.data.order[field.key] == 'desc',
         'sorting_asc': this.data.order[field.key] == 'asc'
       };
@@ -6209,6 +6230,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -6253,8 +6276,11 @@ __webpack_require__.r(__webpack_exports__);
     urlLoadData: function urlLoadData() {
       return "".concat(this.$route.path, "/edit/") + this.editId;
     },
-    urlSave: function urlSave() {
+    urlForUpdate: function urlForUpdate() {
       return "".concat(this.$route.path, "/save/") + this.editId;
+    },
+    urlForCreate: function urlForCreate() {
+      return "".concat(this.$route.path, "/save");
     },
     component: function component() {
       return this.data.component;
@@ -6264,7 +6290,7 @@ __webpack_require__.r(__webpack_exports__);
     sort: function sort(field) {
       var _this = this;
 
-      if (!field.isSortable || this.isLoad) {
+      if (!field.is_sortable || this.isLoad) {
         return;
       }
 
@@ -6277,12 +6303,20 @@ __webpack_require__.r(__webpack_exports__);
         _this.loadData();
       });
     },
-    clearOrder: function clearOrder() {
+    search: function search(filter) {
       var _this2 = this;
 
       this.loader(true);
-      this.axios.post("".concat(this.$route.path, "/clear-order")).then(function (response) {
+      this.axios.post("".concat(this.$route.path, "/filter"), filter).then(function (response) {
         _this2.loadData();
+      });
+    },
+    clearOrder: function clearOrder() {
+      var _this3 = this;
+
+      this.loader(true);
+      this.axios.post("".concat(this.$route.path, "/clear-order")).then(function (response) {
+        _this3.loadData();
       });
     },
     closeWindow: function closeWindow() {
@@ -6294,21 +6328,21 @@ __webpack_require__.r(__webpack_exports__);
       window.history.pushState(url, '', url);
     },
     loadData: function loadData() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.loader(true);
       this.editId = null;
       var getParams = this.getParamFromUrl('node') != null ? '?node=' + this.getParamFromUrl('node') : '';
       this.axios.get("".concat(this.$route.path, "/list").concat(getParams)).then(function (response) {
-        _this3.data = response.data;
-        _this3.listItems = response.data.data;
-        _this3.title = response.data.title;
-        _this3.fields = response.data.fields;
-        _this3.isSortable = response.data.isSortable;
-        _this3.order = response.data.order;
-        document.title = _this3.title;
+        _this4.data = response.data;
+        _this4.listItems = response.data.data;
+        _this4.title = response.data.title;
+        _this4.fields = response.data.fields;
+        _this4.isSortable = response.data.is_sortable;
+        _this4.order = response.data.order;
+        document.title = _this4.title;
 
-        _this3.loader(false);
+        _this4.loader(false);
       });
     },
     getParamFromUrl: function getParamFromUrl(param) {
@@ -6334,10 +6368,10 @@ __webpack_require__.r(__webpack_exports__);
       window.history.pushState(url, '', url);
     },
     deletePost: function deletePost(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios["delete"]("".concat(this.$route.path, "/delete/").concat(id)).then(function (response) {
-        _this4.loadData();
+        _this5.loadData();
       });
     },
     loader: function loader(status) {
@@ -47340,7 +47374,7 @@ var render = function () {
                             _c(
                               "tr",
                               [
-                                _vm.data.isSortable
+                                _vm.data.is_sortable
                                   ? _c(
                                       "th",
                                       {
@@ -47365,7 +47399,7 @@ var render = function () {
                                     "th",
                                     {
                                       key: field.key,
-                                      class: _vm.classForTh(field),
+                                      class: _vm.classForThOrder(field),
                                       staticStyle: { position: "relative" },
                                       style: {
                                         width: field.width
@@ -47438,6 +47472,117 @@ var render = function () {
                               ],
                               2
                             ),
+                            _vm._v(" "),
+                            _c(
+                              "tr",
+                              { staticClass: "filters-row" },
+                              [
+                                _vm._l(_vm.data.fields, function (field) {
+                                  return _c("td", { key: field.key }, [
+                                    _c(
+                                      "div",
+                                      { staticStyle: { position: "relative" } },
+                                      [
+                                        field.is_filterable
+                                          ? _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.filter[field.key],
+                                                  expression:
+                                                    "filter[field.key]",
+                                                },
+                                              ],
+                                              staticClass:
+                                                "form-control input-small",
+                                              attrs: {
+                                                type: "text",
+                                                name:
+                                                  "filter[" + field.key + "]",
+                                              },
+                                              domProps: {
+                                                value: _vm.filter[field.key],
+                                              },
+                                              on: {
+                                                input: function ($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.$set(
+                                                    _vm.filter,
+                                                    field.key,
+                                                    $event.target.value
+                                                  )
+                                                },
+                                              },
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _vm.filter[field.key]
+                                          ? _c(
+                                              "button",
+                                              {
+                                                staticClass: "close",
+                                                staticStyle: {
+                                                  position: "absolute",
+                                                  top: "6px",
+                                                  right: "6px",
+                                                },
+                                                on: {
+                                                  click: function ($event) {
+                                                    return _vm.clearFilter(
+                                                      field.key
+                                                    )
+                                                  },
+                                                },
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                    ×\n                                  "
+                                                ),
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                      ]
+                                    ),
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    staticClass: "e-insert_button-cell",
+                                    staticStyle: { "min-width": "69px" },
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn btn-default btn-sm tb-search-btn",
+                                        staticStyle: { "min-width": "70px" },
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.$emit(
+                                              "search",
+                                              _vm.filter
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                  Поиск\n                                "
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                              ],
+                              2
+                            ),
                           ]),
                           _vm._v(" "),
                           _c(
@@ -47456,7 +47601,7 @@ var render = function () {
                                 "tr",
                                 { key: item.id },
                                 [
-                                  _vm.data.isSortable
+                                  _vm.data.is_sortable
                                     ? _c(
                                         "td",
                                         {
@@ -48368,14 +48513,14 @@ var render = function () {
         attrs: {
           id: _vm.editId,
           urlLoadData: _vm.urlLoadData,
-          urlSave: _vm.urlSave,
+          urlSave: _vm.urlForUpdate,
         },
         on: { closeWindow: _vm.closeWindow, loadData: _vm.loadData },
       }),
       _vm._v(" "),
       _vm.isShowCreateWindow
         ? _c("create", {
-            attrs: { url: _vm.$route.path },
+            attrs: { url: _vm.$route.path, urlCreate: _vm.urlForCreate },
             on: {
               closeWindow: function ($event) {
                 _vm.isShowCreateWindow = false
@@ -48395,6 +48540,7 @@ var render = function () {
           sort: _vm.sort,
           clearOrder: _vm.clearOrder,
           loader: _vm.loader,
+          search: _vm.search,
         },
       }),
     ],

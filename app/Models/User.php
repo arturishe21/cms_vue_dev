@@ -11,10 +11,6 @@ class User extends UserBuilder
 
    // protected $appends = ['is_admin'];
 
-    public function activation()
-    {
-        return $this->hasOne(EloquentActivation::class);
-    }
 
     public function getIsAdminAttribute()
     {

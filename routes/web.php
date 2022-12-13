@@ -33,6 +33,7 @@ Route::group(['prefix' => 'cms'], function () {
     Route::post('{table}/{id}/{relative}/save', [DefinitionFieldController::class, 'store']);
 
 
+    Route::post('{table}/filter', [PagesController::class, 'filter']);
     Route::post('{table}/search', [PagesController::class, 'search']);
 
     Route::get('init', [AdminController::class, 'init']);

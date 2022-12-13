@@ -66,11 +66,6 @@
             data () {
                 return this.$store.getters.getData;
             },
-
-            urlSave() {
-                return `${this.urlCreate}/save`;
-            },
-
         },
 
         methods: {
@@ -82,7 +77,7 @@
             save() {
                 this.$store.commit('message', true);
 
-                this.axios.post(this.urlSave, this.data)
+                this.axios.post(this.urlCreate, this.data)
                     .then(response => {
                         this.close();
                         this.$emit("loadData");

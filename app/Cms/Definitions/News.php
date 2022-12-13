@@ -29,21 +29,43 @@ use Carbon\Carbon;
 
 class News extends Resource
 {
-    public $model = \App\Models\News::class;
+    public string $model = \App\Models\News::class;
     public string $title = 'Новости';
 
     public function fields(): array
     {
         return [
-            Id::make('#', 'id')->sortable(),
-            Textarea::make('Заголовок', 'title')->sortable(),
+            'main' => [
+                Id::make('#', 'id')->sortable(),
+                Textarea::make('Заголовок', 'title')->sortable()->filter(),
 
-            ForeignAjax::make('Пользователь', 'user_id')
-                ->options(
-                    (new Options('user'))->keyField('email')),
+                ForeignAjax::make('Пользователь', 'user_id')
+                    ->options(
+                        (new Options('user'))->keyField('email'))
+                ->filter()
+                ,
 
-            Checkbox::make('Активно', 'is_active')->sortable(),
-           // Froala::make('Заголовок2', 'description2')->language()
+                Checkbox::make('Активно', 'is_active')->sortable(),
+                // Froala::make('Заголовок2', 'description2')->language()
+            ],
+
+            'SEO' => [
+                Text::make('Seo title', 'rr')
+                  //  ->language()
+                    ->morphOne('seo')
+                    ->onlyForm(),
+               /* Textarea::make('Seo description', 'seo_description')
+                 //   ->language()
+                    ->morphOne('seo')
+                    ->onlyForm(),
+                Text::make('Seo keywords', 'seo_keywords')
+                  //  ->language()
+                    ->morphOne('seo')
+                    ->onlyForm(),*/
+                Checkbox::make('Seo noindex', 'is_seo_noindex')
+                    ->onlyForm()
+                    ->morphOne('seo'),
+            ]
         ];
     }
 

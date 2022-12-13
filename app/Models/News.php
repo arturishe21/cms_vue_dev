@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use App\Models\MorphOne\Seo;
+
 class News extends BaseModel
 {
     protected $table = 'news';
     protected $fillable = [];
+
+    public function seo(): MorphOne
+    {
+        return $this->morphOne(Seo::class, 'seo');
+    }
 
     public function banners()
     {

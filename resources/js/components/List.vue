@@ -13,25 +13,44 @@
                             <table id="datatable_fixed_column" class="table table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th v-if="data.isSortable" style="width: 1%; padding: 0;">
+                                    <th v-if="data.is_sortable" style="width: 1%; padding: 0;">
                                         <i style="margin-left: -10px;" class="fa fa-reorder"></i>
                                     </th>
-
                                     <th v-for="field in data.fields" :key="field.key"
                                         style="position: relative"
                                         :style="{width: field.width ? field.width : 'auto'}"
-                                        :class="classForTh(field)"
+                                        :class="classForThOrder(field)"
                                         @click="$emit('sort', field)"
                                     >
                                         <button type="button" @click="$emit('clearOrder')" v-if="data.order[field.key]" class="close" style="position: absolute; top: 12px; left: 13px;">×</button>
                                         {{field.title}}
                                     </th>
-
                                     <th class="e-insert_button-cell" style="min-width: 69px;">
                                         <button class="btn btn-sm btn-success" style="min-width: 70px;" type="button" @click="$emit('add')">
                                             Добавить
                                         </button>
                                     </th>
+                                </tr>
+                                <tr class="filters-row">
+                                  <td v-for="field in data.fields" :key="field.key">
+                                    <div style="position: relative;">
+                                      <input
+                                          v-if="field.is_filterable"
+                                          type="text"
+                                          :name="'filter['+ field.key +']'"
+                                          v-model="filter[field.key]"
+                                          class="form-control input-small">
+
+                                      <button v-if="filter[field.key]" @click="clearFilter(field.key)" class="close" style="position: absolute; top: 6px; right: 6px;">
+                                        ×
+                                      </button>
+                                    </div>
+                                  </td>
+                                  <td class="e-insert_button-cell" style="min-width: 69px;">
+                                    <button class="btn btn-default btn-sm tb-search-btn" style="min-width: 70px;" type="button"  @click="$emit('search', filter)">
+                                      Поиск
+                                    </button>
+                                  </td>
                                 </tr>
                                 </thead>
                                 <draggable
@@ -42,7 +61,7 @@
                                         @update="onDraggableUpdate"
                                 >
                                     <tr v-for="item in listItems.data" :key="item.id">
-                                        <td v-if="data.isSortable" class="tb-sort" style="cursor:s-resize;">
+                                        <td v-if="data.is_sortable" class="tb-sort" style="cursor:s-resize;">
                                             <i class="fa fa-sort"></i>
                                         </td>
                                         <td v-for="field in data.fields" :key="field.key">
@@ -96,13 +115,18 @@
             return {
                 data: {},
                 listItems: [],
-                openItemDropdown: false
+                openItemDropdown: false,
+                filter: {}
             }
         },
 
         mounted() {
             this.data = this.info;
             this.listItems = this.info.data;
+
+            if (typeof this.data.filter === 'object' && this.data.filter != '') {
+              this.filter = this.data.filter;
+            }
         },
 
         watch: {
@@ -114,6 +138,12 @@
 
         methods: {
 
+           clearFilter(key)
+           {
+               this.filter[key] = '';
+               this.$emit('search', this.filter)
+           },
+
             openDropdown(item)
             {
                 this.openItemDropdown = this.openItemDropdown == item ? false : item;
@@ -124,10 +154,10 @@
                 return this.openItemDropdown == item;
             },
 
-            classForTh(field)
+            classForThOrder(field)
             {
                 return {
-                    'sorting' : field.isSortable,
+                    'sorting' : field.is_sortable,
                     'sorting_desc' : this.data.order[field.key] == 'desc',
                     'sorting_asc' : this.data.order[field.key] == 'asc',
                 }

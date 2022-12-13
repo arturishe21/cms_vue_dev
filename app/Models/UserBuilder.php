@@ -5,18 +5,20 @@ namespace App\Models;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use DB;
 use Cartalyst\Sentinel\Activations\EloquentActivation;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class User.
  */
 class UserBuilder extends EloquentUser
 {
-    public function groups()
+    public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'role_users',  'user_id', 'role_id');
     }
 
-    public function activation()
+    public function activation(): HasOne
     {
         return $this->hasOne(EloquentActivation::class);
     }
@@ -39,7 +41,7 @@ class UserBuilder extends EloquentUser
      *
      * @return mixed|string
      */
-    public function getAvatar(array $imgParam)
+    public function getAvatar(array $imgParam): string
     {
         $image = $this->picture ?? '/packages/vis/builder/img/blank_avatar.gif';
 
@@ -49,7 +51,7 @@ class UserBuilder extends EloquentUser
     /**
      * @return string
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->first_name.' '.$this->last_name;
     }
