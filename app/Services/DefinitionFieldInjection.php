@@ -15,7 +15,7 @@ class DefinitionFieldInjection
     {
         $modelDefinitionClass = "App\\Cms\\Definitions\\" . ucfirst(Str::camel($table));
 
-        $this->definition =  new $modelDefinitionClass();
+        $this->definition =  app($modelDefinitionClass);
         $this->model = $id ? $this->definition->model()->find($id) : $this->definition->model();
 
         $this->relativeDefinition = $this->definition->getField($relative)->getDefinitionRelation();

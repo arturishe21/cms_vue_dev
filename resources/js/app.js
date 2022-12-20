@@ -11,7 +11,7 @@ import axios from 'axios';
 import {routes} from './routes';
 import Pagination from 'vue2-laravel-pagination'
 import Translit from './plugins/Translit'
-
+import Notifications from 'vue-notification'
 
 import Id from './components/fields/Id.vue'
 import Virtual from './components/fields/Virtual.vue'
@@ -38,15 +38,19 @@ import Definition from './components/fields/Definition.vue'
 import MultiFile from './components/fields/MultiFile.vue'
 import MultiImage from './components/fields/MultiImage.vue'
 
+import FilterText from './components/filters/Text.vue'
+import FilterForeignAjax from './components/filters/ForeignAjax.vue'
+import FilterSelect from './components/filters/Select.vue'
+import FilterDate from './components/filters/Date.vue'
+
 import FormCenter from './components/FormCenter.vue'
 import Paginate from './components/partials/Paginate.vue'
 
 import store from "./store";
 
-import { BDropdown, BAlert } from 'bootstrap-vue'
+import { BDropdown } from 'bootstrap-vue'
 Vue.component('b-dropdown', BDropdown);
 Vue.component('pagination', Pagination);
-Vue.component('b-alert', BAlert);
 
 Vue.component('idField', Id);
 Vue.component('virtualField', Virtual);
@@ -72,14 +76,31 @@ Vue.component('ForeignajaxField', ForeignAjax);
 Vue.component('DefinitionField', Definition);
 Vue.component('multifileField', MultiFile);
 Vue.component('multiimageField', MultiImage);
-Vue.component('paginate', Paginate);
 
+Vue.component('FilterText', FilterText);
+Vue.component('FilterForeignAjax', FilterForeignAjax);
+Vue.component('FilterSelect', FilterSelect);
+Vue.component('FilterDate', FilterDate);
+
+Vue.component('paginate', Paginate);
 Vue.component('formData', FormCenter);
+
+require('froala-editor/js/froala_editor.pkgd.min.js')
+
+// Require Froala Editor css files.
+require('froala-editor/css/froala_editor.pkgd.min.css')
+require('froala-editor/css/froala_style.min.css')
+
+
+// Import and use Vue Froala lib.
+import VueFroala from 'vue-froala-wysiwyg'
+Vue.use(VueFroala)
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 Vue.use(Translit, {});
+Vue.use(Notifications);
 
 const router = new VueRouter({
     mode: 'history',

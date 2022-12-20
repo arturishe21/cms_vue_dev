@@ -30,23 +30,27 @@ use Carbon\Carbon;
 class News extends Resource
 {
     public string $model = \App\Models\News::class;
+    protected bool $isSortable = true;
     public string $title = 'Новости';
+    protected string $orderBy = 'id desc';
 
     public function fields(): array
     {
         return [
             'main' => [
                 Id::make('#', 'id')->sortable(),
-                Textarea::make('Заголовок', 'title')->sortable()->filter(),
+                Text::make('Заголовок', 'title')->sortable()->filter(),
 
                 ForeignAjax::make('Пользователь', 'user_id')
                     ->options(
                         (new Options('user'))->keyField('email'))
-                ->filter()
+                    ->filter()
                 ,
 
-                Checkbox::make('Активно', 'is_active')->sortable(),
-                // Froala::make('Заголовок2', 'description2')->language()
+                Datetime::make('created', 'created_at')->filter(),
+
+                Checkbox::make('Активно', 'is_active')->sortable()->filter(),
+                Froala::make('Заголовок2', 'picture')->filter()
             ],
 
             'SEO' => [

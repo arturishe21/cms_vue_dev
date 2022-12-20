@@ -26,7 +26,5 @@ class DefinitionFieldController extends Controller
     public function store(DefinitionFieldInjection $modelDefinition)
     {
         $modelDefinition->relativeDefinition->saveAddForm(request()->all(), $modelDefinition->relativeModel);
-
-        //dd($modelDefinition->relativeDefinition);
     }
 }

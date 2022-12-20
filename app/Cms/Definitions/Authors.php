@@ -5,6 +5,7 @@ namespace App\Cms\Definitions;
 use Vis\Builder\Services\Actions;
 use App\Models\Article;
 use Vis\Builder\Fields\{Color,
+    Date,
     Froala,
     Hidden,
     ManyToManyAjax,
@@ -37,7 +38,8 @@ class Authors extends Resource
         return [
             'test' => [
                 Id::make('#', 'id')->sortable(),
-                Text::make('ИМя', 'full_name')->language(),
+                Text::make('ИМя', 'full_name')->language()->filter(),
+                Date::make('created_at', 'created_at')->filter()
             ],
         ];
     }

@@ -60,12 +60,8 @@
             }
         },
 
-        watch: {
-            urlLoadData (url) {
-                if (this.id) {
-                    this.loadData(url);
-                }
-            }
+        mounted() {
+          this.loadData(this.urlLoadData);
         },
 
         computed: {
@@ -88,6 +84,7 @@
                     .then(response => {
                        this.$emit("loadData");
                        this.close();
+                       this.$notify({text: response.data.message, type: response.data.status});
                     })
                     .catch(err => consolel.log(err))
             },

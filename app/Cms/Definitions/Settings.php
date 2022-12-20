@@ -9,11 +9,11 @@ use Vis\Builder\Fields\Custom\TextSetting;
 
 class Settings extends Resource
 {
-    public $model = \Vis\Builder\Setting::class;
-    public $title = 'Настройки';
-    protected $orderBy = 'id desc';
+    public string $model = \Vis\Builder\Setting::class;
+    public string $title = 'Настройки';
+    protected string $orderBy = 'id desc';
 
-    public function fields()
+    public function fields(): array
     {
         return [
             Id::make('#', 'id')->sortable(),
@@ -45,7 +45,7 @@ class Settings extends Resource
             Textarea::make('Значение', 'textarea_with_languages')->language()->onlyForm()
                 ->className('textarea_with_languages'),
 
-            Froala::make('Значение', 'froala_with_languages')->language()->onlyForm()
+            Froala::make('Значение', 'froala_with_languages')->onlyForm()
                 ->className('froala_with_languages'),
 
             File::make('Значение', 'file')->onlyForm()

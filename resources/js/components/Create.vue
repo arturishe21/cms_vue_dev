@@ -75,14 +75,13 @@
             },
 
             save() {
-                this.$store.commit('message', true);
-
                 this.axios.post(this.urlCreate, this.data)
                     .then(response => {
                         this.close();
                         this.$emit("loadData");
+                        this.$notify({text: response.data.message, type: response.data.status});
                     })
-                    .catch(err => consolel.log(err))
+                    .catch(err => console.log(err))
             },
 
             loadData() {

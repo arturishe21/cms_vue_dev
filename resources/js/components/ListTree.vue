@@ -87,7 +87,7 @@
 
                                                             </td>
                                                             <td style="width: 80px">
-                                                                <div class="btn-group  pull-right">
+                                                                <div class="btn-group pull-right">
                                                                     <b-dropdown right no-caret>
                                                                         <template #button-content>
                                                                             <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
@@ -144,7 +144,7 @@
                 this.elementDraggable = evt.draggedContext.element.id;
             },
 
-            add () {
+            add() {
 
                 this.$store.commit('updateData', {
                     'key': '__node',
@@ -154,11 +154,11 @@
                 this.$emit('add');
             },
 
-            edit (item) {
+            edit(item) {
                 this.$emit('edit', item.id);
             },
 
-            remove (item) {
+            remove(item) {
                 this.$emit('deletePost', item.id);
             },
 

@@ -13,8 +13,6 @@ use Vis\Builder\Fields\{Date,
     Image,
     File,
     MultiFile,
-    MultiImage,
-    Readonly,
     Select,
     Text,
     MultiSelect,
@@ -26,21 +24,19 @@ use Vis\Builder\Services\Export;
 
 class Words extends Resource
 {
-    public $model = Word::class;
-    public $title = 'Слова';
-    protected $orderBy = 'created_at desc';
-    protected $autoTranslate = false;
+    public string $model = Word::class;
+    public string $title = 'Слова';
 
-    public function fields()
+    public function fields(): array
     {
         return [
             Id::make('#', 'id')->sortable(),
-
+/*
             Text::make('Заголовок', 'title')
                 ->filter()
                 ->language()
                 ->transliteration('link', true)
-            ,
+            ,*/
           //  Froala::make('Описание', 'description')->filter()->language(),
             MultiFile::make('Файл mp3', 'sound'),
             File::make('Картинка', 'title_ru')->accept('ss'),
@@ -62,14 +58,14 @@ class Words extends Resource
           /*  ManyToManyMultiSelect::make('Группа')->options(
                 (new Options('groups'))->keyField('slug')
             ),*/
-            Foreign::make('User', 'author_id')
+           /* Foreign::make('User', 'author_id')
                 ->saveOnChange()
-                ->options((new Options('author'))
-                    ->keyField('full_name')->isJson())
+                ->options((new Options('author')))*/
+                    /*->keyField('full_name')->isJson())*/
         ];
     }
 
-    public function buttons()
+    public function buttons(): array
     {
         return [
             Export::class,

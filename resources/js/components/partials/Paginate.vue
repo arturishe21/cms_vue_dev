@@ -35,11 +35,15 @@
             fetchData(page) {
                 page = page || 1;
 
-                this.axios.get(`${this.$route.path}/list?page=`  + page)
+                this.axios.get(`${this.$route.path}/list?page=` + page)
                     .then(response => {
-                        this.$emit("updatelist", response);
+                        this.$emit("updatelist", {
+                          'list': response,
+                          'page': page,
+                          'per_page': this.listItems.per_page
+                        });
                     })
-                    .catch(err => consolel.log(err))
+                    .catch(err => console.log(err))
             },
         }
     }

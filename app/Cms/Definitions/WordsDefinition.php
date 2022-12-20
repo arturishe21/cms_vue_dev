@@ -3,28 +3,19 @@
 namespace App\Cms\Definitions;
 
 use App\Models\WordsDefinition as WordsDefinitionModel;
-use Vis\Builder\Fields\{Color,
-    Datetime,
-    ForeignAjax,
-    Froala,
+use Vis\Builder\Fields\{
     Id,
-    Hidden,
-    Foreign,
-    Image,
-    File,
-    Readonly,
-    Text,
-    Definition};
+    Text};
 use Vis\Builder\Definitions\Resource;
 
 class WordsDefinition extends Resource
 {
-    public $model = WordsDefinitionModel::class;
-    public $title = 'Описания';
-    protected $orderBy = 'priority desc';
-    protected $perPage = [10, 100, 1000];
+    public string $model = WordsDefinitionModel::class;
+    public string $title = 'Описания';
+    protected string $orderBy = 'priority desc';
+    protected array $perPage = [10, 100, 1000];
 
-    public function fields()
+    public function fields(): array
     {
         return [
             Id::make('#', 'id')->sortable(),

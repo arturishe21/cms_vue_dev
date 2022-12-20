@@ -129,7 +129,7 @@
             },
 
             urlSaveCreate () {
-                return `${this.$route.path}/${this.id}/${this.data.key}`;
+                return `${this.$route.path}/${this.id}/${this.data.key}/save`;
             },
 
             urlLoadData() {
@@ -149,8 +149,7 @@
 
         methods: {
 
-            openDropdown(item)
-            {
+            openDropdown(item) {
                 this.openItemDropdown = this.openItemDropdown == item ? false : item;
             },
 
@@ -158,8 +157,7 @@
                 this.editId = false;
             },
 
-            checkOpenDropdown(item)
-            {
+            checkOpenDropdown(item) {
                 return this.openItemDropdown == item;
             },
 
@@ -195,8 +193,7 @@
                 this.listItems = response.data.data
             },
 
-            classForTh(field)
-            {
+            classForTh(field) {
                 return {
                     'sorting' : field.isSortable,
                     'sorting_desc' : this.list.order[field.key] == 'desc',
@@ -204,8 +201,7 @@
                 }
             },
 
-            getParamFromUrl(param)
-            {
+            getParamFromUrl(param) {
                 let urlParams = new URLSearchParams(window.location.search);
 
                 return urlParams.get(param);

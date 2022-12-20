@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Services\PageInjection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
@@ -14,7 +16,7 @@ class PagesController extends Controller
             'data' => $modelDefinition->definition->getListing(),
             'title' => $modelDefinition->definition->getTitle(),
             'fields' => $modelDefinition->definition->head(),
-            'isSortable' => $modelDefinition->definition->getIsSortable(),
+            'is_sortable' => $modelDefinition->definition->getIsSortable(),
             'order' => $modelDefinition->definition->getOrderByJson(),
             'filter' => $modelDefinition->definition->getFilter(),
             'component' => $modelDefinition->definition->component,
@@ -27,31 +29,29 @@ class PagesController extends Controller
         return $this->getDataForForm($modelDefinition);
     }
 
-    public function store(PageInjection $modelDefinition): void
+    public function store(PageInjection $modelDefinition): JsonResponse
     {
-        $modelDefinition->definition->saveAddForm(request()->all());
+        return $modelDefinition->definition->saveAddForm(request()->all());
     }
 
-    public function create(PageInjection $modelDefinition)
+    public function create(PageInjection $modelDefinition): JsonResponse
     {
         return $this->getDataForForm($modelDefinition);
     }
 
-    public function update(PageInjection $modelDefinition)
+    public function update(PageInjection $modelDefinition): JsonResponse
     {
-        $modelDefinition->definition->saveEditForm(request()->all(), $modelDefinition->model);
+        return $modelDefinition->definition->saveEditForm(request()->all(), $modelDefinition->model);
     }
 
     public function destroy(PageInjection $modelDefinition): JsonResponse
     {
-        $modelDefinition->model->delete();
-
-        return response()->json('The post successfully deleted');
+        return $modelDefinition->definition->remove($modelDefinition->model);
     }
 
-    public function changePosition(PageInjection $modelDefinition)
+    public function changePosition(PageInjection $modelDefinition, Request $request): JsonResponse
     {
-       return $modelDefinition->definition->changePosition(request()->all());
+        return $modelDefinition->definition->changePosition($request);
     }
 
     public function setOrder(PageInjection $modelDefinition): void
@@ -78,7 +78,7 @@ class PagesController extends Controller
 
     private function getDataForForm(PageInjection $modelDefinition): JsonResponse
     {
-        $fields = $modelDefinition->definition->getFields($modelDefinition);
+        $fields = $modelDefinition->definition->getFields();
 
         if (isset($fields[0])) {
             $this->setValueField($fields, $modelDefinition);

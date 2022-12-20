@@ -64,6 +64,28 @@
             .dt-toolbar-footer>:last-child, .dt-toolbar>:last-child {
                 padding-left: 0px;
             }
+            .dropdown.b-dropdown.btn-group button{
+                border-radius: 2px;
+                border: 1px solid #ccc;
+            }
+
+            .mx-input-wrapper .mx-input {
+                border-radius: 2px;
+            }
+            .multiselect .multiselect__tags{
+                padding-top: 2px;
+                min-height: 30px;
+            }
+            .multiselect .multiselect__placeholder{
+                margin-bottom: 6px;
+            }
+            .multiselect .multiselect__select {
+              height: 28px;
+              width: 25px;
+            }
+            .fr-second-toolbar {
+                display: none;
+            }
 
         </style>
     </head>

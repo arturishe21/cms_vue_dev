@@ -12,46 +12,42 @@
                         <div class="widget-body no-padding">
                             <table id="datatable_fixed_column" class="table table-hover table-bordered">
                                 <thead>
-                                <tr>
-                                    <th v-if="data.is_sortable" style="width: 1%; padding: 0;">
-                                        <i style="margin-left: -10px;" class="fa fa-reorder"></i>
-                                    </th>
-                                    <th v-for="field in data.fields" :key="field.key"
-                                        style="position: relative"
-                                        :style="{width: field.width ? field.width : 'auto'}"
-                                        :class="classForThOrder(field)"
-                                        @click="$emit('sort', field)"
-                                    >
-                                        <button type="button" @click="$emit('clearOrder')" v-if="data.order[field.key]" class="close" style="position: absolute; top: 12px; left: 13px;">×</button>
-                                        {{field.title}}
-                                    </th>
-                                    <th class="e-insert_button-cell" style="min-width: 69px;">
-                                        <button class="btn btn-sm btn-success" style="min-width: 70px;" type="button" @click="$emit('add')">
-                                            Добавить
-                                        </button>
-                                    </th>
-                                </tr>
-                                <tr class="filters-row">
-                                  <td v-for="field in data.fields" :key="field.key">
-                                    <div style="position: relative;">
-                                      <input
-                                          v-if="field.is_filterable"
-                                          type="text"
-                                          :name="'filter['+ field.key +']'"
-                                          v-model="filter[field.key]"
-                                          class="form-control input-small">
-
-                                      <button v-if="filter[field.key]" @click="clearFilter(field.key)" class="close" style="position: absolute; top: 6px; right: 6px;">
-                                        ×
+                                  <tr>
+                                      <th v-if="data.is_sortable" style="width: 1%; padding: 0;">
+                                          <i style="margin-left: -10px;" class="fa fa-reorder"></i>
+                                      </th>
+                                      <th v-for="field in data.fields" :key="field.key"
+                                          style="position: relative"
+                                          :style="{width: field.width ? field.width : 'auto'}"
+                                          :class="classForThOrder(field)"
+                                          @click="$emit('sort', field)"
+                                      >
+                                          <button type="button" @click="$emit('clearOrder')" v-if="data.order[field.key]" class="close" style="position: absolute; top: 12px; left: 13px;">×</button>
+                                          {{field.title}}
+                                      </th>
+                                      <th class="e-insert_button-cell" style="min-width: 69px;">
+                                          <button class="btn btn-sm btn-success" style="min-width: 70px;" type="button" @click="$emit('add');">
+                                              Добавить
+                                          </button>
+                                      </th>
+                                  </tr>
+                                  <tr class="filters-row">
+                                    <td v-if="data.is_sortable"></td>
+                                    <td v-for="field in data.fields" :key="field.key">
+                                      <component
+                                          :is="field.filterType"
+                                          :field="field"
+                                          :filter="filter"
+                                          @clearFilter="clearFilter"
+                                          @changeFilter="changeFilter"
+                                      ></component>
+                                    </td>
+                                    <td class="e-insert_button-cell" style="min-width: 69px;">
+                                      <button class="btn btn-default btn-sm tb-search-btn" style="min-width: 70px;" type="button"  @click="$emit('search', filter)">
+                                        Поиск
                                       </button>
-                                    </div>
-                                  </td>
-                                  <td class="e-insert_button-cell" style="min-width: 69px;">
-                                    <button class="btn btn-default btn-sm tb-search-btn" style="min-width: 70px;" type="button"  @click="$emit('search', filter)">
-                                      Поиск
-                                    </button>
-                                  </td>
-                                </tr>
+                                    </td>
+                                  </tr>
                                 </thead>
                                 <draggable
                                         :list="listItems.data"
@@ -68,24 +64,15 @@
                                             <span v-html="item[field.key]"></span>
                                         </td>
                                         <td style="width: 80px">
-
-                                            <div class="btn-group pull-right" :class="{ open: checkOpenDropdown(item) }">
-                                                <a class="btn dropdown-toggle btn-default"
-                                                    data-toggle="dropdown"
-                                                   @click="openDropdown(item)"
-                                                >
-                                                    <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a @click="$emit('edit', item.id)"><i class="fa fa-pencil"></i> Редактировать</a>
-                                                    </li>
-                                                    <li>
-                                                        <a style="color: red" @click="$emit('deletePost', item.id)" ><i class="fa red fa-times"></i> Удалить</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
+                                          <div class="btn-group pull-right">
+                                            <b-dropdown right no-caret>
+                                              <template #button-content>
+                                                <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
+                                              </template>
+                                              <li><a @click="$emit('edit', item.id)"><i class="fa fa-pencil"></i> Редактироварь</a></li>
+                                              <li><a style="color: red" @click="$emit('deletePost', item.id)"><i class="fa red fa-times"></i> Удалить</a></li>
+                                            </b-dropdown>
+                                          </div>
                                         </td>
                                     </tr>
                                 </draggable>
@@ -115,8 +102,9 @@
             return {
                 data: {},
                 listItems: [],
-                openItemDropdown: false,
-                filter: {}
+                filter: {},
+                page: 1,
+                per_page: 20
             }
         },
 
@@ -143,17 +131,10 @@
                this.filter[key] = '';
                this.$emit('search', this.filter)
            },
-
-            openDropdown(item)
+            changeFilter()
             {
-                this.openItemDropdown = this.openItemDropdown == item ? false : item;
+              this.$emit('search', this.filter)
             },
-
-            checkOpenDropdown(item)
-            {
-                return this.openItemDropdown == item;
-            },
-
             classForThOrder(field)
             {
                 return {
@@ -168,14 +149,20 @@
                 this.listItems.data.forEach(function (element) {
                     priorityIds.push(element.id);
                 });
-
+                ;
                 this.axios
-                    .post(`${this.$route.path}/change-position`, priorityIds)
-                    .then(response => {});
+                    .post(`${this.$route.path}/change-position`, {
+                      'ids' : priorityIds,
+                      'number_page' : this.page,
+                      'per_page' : this.per_page
+                    })
+                    .then(response => (this.$notify({text: response.data.message, type: response.data.status})));
             },
 
             updatelist(response) {
-                this.listItems = response.data.data
+                this.listItems = response.list.data.data;
+                this.page = response.page;
+                this.per_page = response.per_page;
             }
         },
     }

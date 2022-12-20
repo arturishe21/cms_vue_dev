@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="load_page" v-if="isLoad" style="position: fixed; display: block; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
-        <b-alert variant="success" :show="isShowMessage">Сохранено</b-alert>
-        <edit v-show="isShow"
+        <notifications/>
+        <edit v-if="isShow"
               :id="editId"
               :urlLoadData="urlLoadData"
               :urlSave = "urlForUpdate"
@@ -15,7 +15,6 @@
                 :url = $route.path
                 :urlCreate = "urlForCreate"
         ></create>
-
 
         <component :is="component"
                    :info="data"
@@ -209,6 +208,7 @@
                     .delete(`${this.$route.path}/delete/${id}`)
                     .then(response => {
                         this.loadData();
+                        this.$notify({text: response.data.message, type: response.data.status});
                     });
             },
 

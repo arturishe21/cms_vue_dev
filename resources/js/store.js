@@ -3,24 +3,16 @@ export default {
 
     state: {
         data: {},
-        isShowMessage : false,
         languages : {},
         menu : {},
         user : {}
     },
 
     getters: {
-        getData: state => {
-            return state.data
-        },
-
+        getData: state => state.data,
         menu: state => state.menu,
         user: state => state.user,
         languages: state => state.languages,
-
-        showMessage: state => {
-            return state.isShowMessage
-        },
     },
 
     mutations: {
@@ -30,14 +22,6 @@ export default {
 
         setDefaultData(state) {
             state.data = {};
-        },
-
-        message (state, status) {
-            state.isShowMessage = status;
-
-            setTimeout(function () {
-                state.isShowMessage = false;
-            }, 2000);
         },
 
         setLanguage (state, languages) {
