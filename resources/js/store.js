@@ -5,23 +5,26 @@ export default {
         data: {},
         languages : {},
         menu : {},
-        user : {}
+        user : {},
     },
 
     getters: {
-        getData: state => state.data,
+        getData: (state) => (definition) => {
+            return state.data[definition];
+        },
         menu: state => state.menu,
         user: state => state.user,
         languages: state => state.languages,
     },
 
     mutations: {
-        updateData (state, {key, value}) {
-            state.data[key] = value;
-        },
+        updateData (state, {definition, key, value}) {
 
-        setDefaultData(state) {
-            state.data = {};
+           if (state.data[definition] == undefined) {
+               state.data[definition] = {};
+           }
+
+           state.data[definition][key] = value;
         },
 
         setLanguage (state, languages) {

@@ -27,21 +27,23 @@
     import FieldBase from './FieldBase';
 
     export default {
+
         extends: FieldBase,
+
         data () {
-                return {
-                    tabActive: 0
-                }
-            },
+            return {
+                tabActive: 0
+            }
+        },
 
         created() {
-                  this.createEmptyValue();
-                },
+             this.createEmptyValue();
+        },
 
         methods: {
-               changeTab(index) {
-                   this.tabActive = index;
-               },
-         }
+             changeTab(index) {
+                 this.tabActive = index;
+             },
+        }
     }
 </script>

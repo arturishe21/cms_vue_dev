@@ -24,7 +24,7 @@
                         </div>
 
                         <div class="modal-body">
-                            <formData :fieldsGroup="fieldsGroup" :id="id"></formData>
+                            <formData :fieldsGroup="fieldsGroup" :id="id" :definition="definition"></formData>
                         </div>
                         <div class="modal-footer" style="padding-top:0">
 
@@ -56,7 +56,8 @@
                 styleWindow: {
                     display: 'block',
                     top: '0px'
-                }
+                },
+                definition: '',
             }
         },
 
@@ -66,7 +67,7 @@
 
         computed: {
             data () {
-                return this.$store.getters.getData;
+                return this.$store.getters.getData(this.definition);
             },
         },
 
@@ -85,22 +86,25 @@
                        this.$emit("loadData");
                        this.close();
                        this.$notify({text: response.data.message, type: response.data.status});
-                    })
-                    .catch(err => consolel.log(err))
+                    }).catch(error => {
+                       this.$emit('showError', error);
+                    });
             },
 
             loadData(url) {
 
-                this.$store.commit('setDefaultData');
+              //  this.$store.commit('setDefaultData');
                 this.styleWindow.top = window.scrollY + 'px';
 
                 this.axios.get(url)
                     .then(response => {
-                        this.fieldsGroup = response.data;
-                        this.tabActive = 0;
+                        this.fieldsGroup = response.data.fields;
+                        this.definition = response.data.definition;
 
-                    })
-                    .catch(err => consolel.log(err))
+                        this.tabActive = 0;
+                    }).catch(error => {
+                        this.$emit('showError', error);
+                    });
             }
         }
     }

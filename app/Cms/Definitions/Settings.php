@@ -45,7 +45,9 @@ class Settings extends Resource
             Textarea::make('Значение', 'textarea_with_languages')->language()->onlyForm()
                 ->className('textarea_with_languages'),
 
-            Froala::make('Значение', 'froala_with_languages')->onlyForm()
+            Froala::make('Значение', 'froala_with_languages')
+                ->onlyForm()
+                ->language()
                 ->className('froala_with_languages'),
 
             File::make('Значение', 'file')->onlyForm()

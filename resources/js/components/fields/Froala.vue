@@ -18,13 +18,7 @@
           data () {
             return {
               config: {
-                immediateVueModelUpdate: true,
                 toolbarButtonsMD: [],
-                events: {
-                  'initialized': function () {
-
-                  }
-                }
               },
             }
           },

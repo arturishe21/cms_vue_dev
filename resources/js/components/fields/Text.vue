@@ -19,13 +19,22 @@
 
     export default {
         extends: FieldBase,
+      watch: {
+        storeData(nn, tt) {
+         /* var field = this.data.transliterationField;
+          if (this.$store.getters.getData && field) {
+            var valueTransliteration = this.$store.getters.getData(this.definition);
+            this.value = this.$strSlug(valueTransliteration[field][this.language]);
+          }*/
 
+          return nn;
+        }
+      },
         computed : {
-            transliteration () {
-                if (this.$store.getters.getData && this.data.transliteration) {
-                    this.value = this.$strSlug(this.$store.getters.getData[this.data.transliteration].ru);
-                }
-            }
+            storeData () {
+              return this.$store.getters.getData(this.definition);
+            },
         },
+
     }
 </script>

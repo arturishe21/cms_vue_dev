@@ -49,7 +49,7 @@ class Words extends Resource
                 ])
                 ->sortable()->filter(),
 
-            Checkbox::make('Активно', 'is_active')->filter()->fastEdit()->hide(true),
+            Checkbox::make('Активно', 'is_active')->filter(),
             Date::make('created_at', 'created_at')->filter()->default(Carbon::now()),
 
             Definition::make('Дефинишен')

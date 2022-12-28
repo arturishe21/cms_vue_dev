@@ -19,17 +19,15 @@ class Contacts extends Tree
     public function fields(): array
     {
         return [
-            'test' => [
+            'test2' => [
                 Id::make('#', 'id')->sortable(),
 
                 Text::make('11', 'slug')
-                    ->comment('sdsds')
                     ->sortable(),
 
                 Select::make('Шаблон', 'template')->options($this->getTemplates()),
 
                 Textarea::make('Заголовок', 'description')
-                    ->comment('sdsds')
                     ->language()
                     ->sortable(),
 

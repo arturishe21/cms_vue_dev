@@ -1,30 +1,37 @@
 <template>
     <div>
         <div class="load_page" v-if="isLoad" style="position: fixed; display: block; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
+
         <notifications/>
+
         <edit v-if="isShow"
               :id="editId"
               :urlLoadData="urlLoadData"
               :urlSave = "urlForUpdate"
+              @showError = 'showError'
               @closeWindow="closeWindow"
-              @loadData="loadData"></edit>
+              @loadData="loadData"
+        ></edit>
 
         <create v-if="isShowCreateWindow"
-                @closeWindow="isShowCreateWindow = false"
-                @loadData="loadData"
-                :url = $route.path
-                :urlCreate = "urlForCreate"
+              @closeWindow="isShowCreateWindow = false"
+              @loadData="loadData"
+              @showError = 'showError'
+              :url = $route.path
+              :urlCreate = "urlForCreate"
         ></create>
 
         <component :is="component"
-                   :info="data"
-                   @edit="edit"
-                   @add="add"
-                   @deletePost="deletePost"
-                   @sort="sort"
-                   @clearOrder="clearOrder"
-                   @loader="loader"
-                   @search="search"
+               :info="data"
+               @edit="edit"
+               @add="add"
+               @deletePost="deletePost"
+               @sort="sort"
+               @clearOrder="clearOrder"
+               @loader="loader"
+               @search="search"
+               @showError = 'showError'
+               @setPage = 'setPage'
         ></component>
     </div>
 </template>
@@ -55,7 +62,8 @@
                 isShowCreateWindow: false,
                 isLoad: false,
                 isSortable: false,
-                order: []
+                order: [],
+                page: 1
             }
         },
 
@@ -69,6 +77,7 @@
 
         watch: {
             '$route'(to, from) {
+                this.setPage(1);
                 this.loadData();
             }
         },
@@ -112,9 +121,10 @@
                         {
                             'field' : field.key,
                             'direction' : direction
-                        })
-                    .then(response => {
+                    }).then(response => {
                         this.loadData()
+                    }).catch(error => {
+                        this.showError(error);
                     });
             },
 
@@ -124,7 +134,9 @@
                 this.axios
                     .post(`${this.$route.path}/filter`, filter)
                     .then(response => {
-                      this.loadData()
+                        this.loadData()
+                    }).catch(error => {
+                        this.showError(error);
                     });
             },
 
@@ -135,6 +147,8 @@
                     .post(`${this.$route.path}/clear-order`)
                     .then(response => {
                         this.loadData()
+                    }).catch(error => {
+                        this.showError(error);
                     });
             },
 
@@ -150,11 +164,22 @@
                 window.history.pushState(url, '', url);
             },
 
+            setPage(page) {
+              this.page = page;
+            },
+
             loadData() {
                 this.loader(true);
                 this.editId = null;
 
                 let getParams = this.getParamFromUrl('node') != null ? '?node=' + this.getParamFromUrl('node') : '';
+
+                if (this.getParamFromUrl('page') != null) {
+                  getParams = '?page=' + this.getParamFromUrl('page');
+                }
+                if (this.page != 1) {
+                  getParams = '?page=' + this.page;
+                }
 
                 this.axios
                     .get(`${this.$route.path}/list${getParams}` )
@@ -170,6 +195,8 @@
                         document.title = this.title;
 
                         this.loader(false);
+                    }).catch(error => {
+                        this.showError(error);
                     });
             },
 
@@ -209,11 +236,17 @@
                     .then(response => {
                         this.loadData();
                         this.$notify({text: response.data.message, type: response.data.status});
-                    });
+                    }).catch(error => {
+                        this.showError(error);
+                   });
             },
 
             loader(status) {
                 this.isLoad = status;
+            },
+
+            showError(error) {
+              this.$notify({text: error.response.data.message, type: 'error'});
             }
         }
     }

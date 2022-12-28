@@ -43,6 +43,8 @@ import FilterForeignAjax from './components/filters/ForeignAjax.vue'
 import FilterSelect from './components/filters/Select.vue'
 import FilterDate from './components/filters/Date.vue'
 
+import Actions from './components/partials/Actions.vue'
+
 import FormCenter from './components/FormCenter.vue'
 import Paginate from './components/partials/Paginate.vue'
 
@@ -84,6 +86,7 @@ Vue.component('FilterDate', FilterDate);
 
 Vue.component('paginate', Paginate);
 Vue.component('formData', FormCenter);
+Vue.component('actions', Actions);
 
 require('froala-editor/js/froala_editor.pkgd.min.js')
 

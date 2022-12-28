@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="stylesheet" href="/packages/vis/builder/fontawesome-pro-5.12.0-web/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="/packages/vis/builder/css/all.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+<!--        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">-->
         <link rel="shortcut icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
 

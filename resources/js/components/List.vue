@@ -64,6 +64,7 @@
                                             <span v-html="item[field.key]"></span>
                                         </td>
                                         <td style="width: 80px">
+                                          <actions :item="item" ></actions>
                                           <div class="btn-group pull-right">
                                             <b-dropdown right no-caret>
                                               <template #button-content>
@@ -77,7 +78,7 @@
                                     </tr>
                                 </draggable>
                             </table>
-                            <paginate :listItems = 'listItems' @updatelist="updatelist"></paginate>
+                            <paginate :listItems = 'listItems' :per_page_list="info.per_page_list" @updatelist="updatelist"></paginate>
                         </div>
                     </div>
                 </div>
@@ -103,8 +104,7 @@
                 data: {},
                 listItems: [],
                 filter: {},
-                page: 1,
-                per_page: 20
+                page: 1
             }
         },
 
@@ -126,15 +126,17 @@
 
         methods: {
 
-           clearFilter(key)
-           {
+            clearFilter(key)
+            {
                this.filter[key] = '';
                this.$emit('search', this.filter)
-           },
+            },
+
             changeFilter()
             {
               this.$emit('search', this.filter)
             },
+
             classForThOrder(field)
             {
                 return {
@@ -154,15 +156,20 @@
                     .post(`${this.$route.path}/change-position`, {
                       'ids' : priorityIds,
                       'number_page' : this.page,
-                      'per_page' : this.per_page
+                      'per_page' : this.listItems.per_page
                     })
-                    .then(response => (this.$notify({text: response.data.message, type: response.data.status})));
+                    .then(response => (this.$notify({text: response.data.message, type: response.data.status})))
+                    .catch(error => {
+                      this.$emit('showError', error);
+                    });
             },
 
             updatelist(response) {
                 this.listItems = response.list.data.data;
                 this.page = response.page;
-                this.per_page = response.per_page;
+                this.listItems.per_page = response.per_page;
+
+                this.$emit('setPage', this.page)
             }
         },
     }

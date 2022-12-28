@@ -23,7 +23,7 @@
                         <h4 class="modal-title" id="modal_form_label">Cоздание</h4>
                     </div>
                     <div class="modal-body">
-                        <formData :fieldsGroup="fieldsGroup" :id="id"></formData>
+                        <formData :fieldsGroup="fieldsGroup" :definition="definition" :id="id"></formData>
                     </div>
                     <div class="modal-footer" style="padding-top:0">
                         <button type="button" class="btn btn-success btn-sm" @click="save()">
@@ -54,7 +54,8 @@
                 styleWindow: {
                     display: 'block',
                     top: '0px'
-                }
+                },
+                definition: '',
             }
         },
 
@@ -64,7 +65,7 @@
 
         computed: {
             data () {
-                return this.$store.getters.getData;
+                return this.$store.getters.getData(this.definition);
             },
         },
 
@@ -80,20 +81,22 @@
                         this.close();
                         this.$emit("loadData");
                         this.$notify({text: response.data.message, type: response.data.status});
-                    })
-                    .catch(err => console.log(err))
+                    }).catch(error => {
+                        this.$emit('showError', error);
+                    });
             },
 
             loadData() {
-
                 this.styleWindow.top = window.scrollY + 'px';
 
                 this.axios.get(`${this.url}/create`)
                     .then(response => {
-                        this.fieldsGroup = response.data;
+                        this.fieldsGroup = response.data.fields;
+                        this.definition = response.data.definition;
                         this.tabActive = 0;
-                    })
-                    .catch(err => console.log(err))
+                    }).catch(error => {
+                        this.$emit('showError', error);
+                    });
             }
         }
     }

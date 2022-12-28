@@ -15,19 +15,19 @@
                                 <thead>
                                 <tr>
                                     <th class="text-left">
-                                        <template v-if="list.node">
+                                        <template v-if="data.node">
 
-                                            <span v-for="link in list.node.ancestors">
+                                            <span v-for="link in data.node.ancestors">
                                                  <a @click="getNodeContent(link.id)" style="color: #fff" class="node_link" >{{jsonConvert(link.title)}}</a> /
                                             </span>
 
                                             <span>
-                                                {{jsonConvert(list.node.page.title)}}
+                                                {{jsonConvert(data.node.page.title)}}
                                             </span>
 
                                         </template>
-                                        <template v-if="list.node">
-                                            <a style="min-width: 70px; float: right;" @click="edit(list.node.page)">Редактировать</a>
+                                        <template v-if="data.node">
+                                            <a style="min-width: 70px; float: right;" @click="edit(data.node.page)">Редактировать</a>
                                         </template>
                                     </th>
                                 </tr>
@@ -42,7 +42,7 @@
                                                             <i style="margin-left: -10px;" class="fa fa-reorder"></i>
                                                         </th>
 
-                                                        <th v-for="field in list.fields" :key="field.key"
+                                                        <th v-for="field in data.fields" :key="field.key"
                                                             style="position: relative"
                                                         >
                                                             {{field.title}}
@@ -54,37 +54,54 @@
                                                             </button>
                                                         </th>
                                                     </tr>
-                                                    <template v-if="list.node">
-                                                        <tr v-if="list.node.page.parent_id">
+                                                    <template v-if="data.node">
+                                                        <tr v-if="data.node.page.parent_id">
                                                             <td colspan="6" style="text-align: left">
-                                                                <a @click="getNodeContent(list.node.page.parent_id)" class="node_link">&larr; Назад</a>
+                                                                <a @click="getNodeContent(data.node.page.parent_id)" class="node_link">&larr; Назад</a>
                                                             </td>
                                                         </tr>
                                                     </template>
+                                                    <tr class="filters-row" v-if="isShowFilter">
+                                                      <td></td>
+                                                      <td v-for="field in data.fields" :key="field.key">
+                                                        <component
+                                                            :is="field.filterType"
+                                                            :field="field"
+                                                            :filter="filter"
+                                                            @clearFilter="clearFilter"
+                                                            @changeFilter="changeFilter"
+                                                        ></component>
+                                                      </td>
+                                                      <td class="e-insert_button-cell" style="min-width: 69px;">
+                                                        <button class="btn btn-default btn-sm tb-search-btn" style="min-width: 70px;" type="button"  @click="$emit('search', filter)">
+                                                          Поиск
+                                                        </button>
+                                                      </td>
+                                                    </tr>
                                                 </thead>
 
                                                     <draggable
-                                                            :list="list.data.data"
+                                                            :list="listItems.data"
                                                             :element="'tbody'"
                                                             handle=".tb-sort"
                                                             ref="draggable"
                                                             @update="onDraggableUpdate"
                                                             :move="checkMove"
                                                     >
-                                                        <tr v-for="item in list.data.data" :key="item.id">
+                                                        <tr v-for="item in listItems.data" :key="item.id">
                                                             <td class="tb-sort" style="cursor:s-resize;">
                                                                 <i class="fa fa-sort"></i>
                                                             </td>
-                                                            <td v-for="field in list.fields" :key="field.key" style="text-align:left">
-
+                                                            <td v-for="field in data.fields" :key="field.key">
                                                                 <template v-if="field.key == 'title'">
+                                                                  <p style="text-align: left">
                                                                     <i :class="[item[field.key].folder ? 'fa fa-folder' : 'fal fa-file']"></i>&nbsp;
                                                                     <a @click="getNodeContent(item.id)" class="node_link">{{ item[field.key].title }}</a>
+                                                                  </p>
                                                                 </template>
                                                                 <template v-else>
                                                                     <span v-html="item[field.key].title"></span>
                                                                 </template>
-
                                                             </td>
                                                             <td style="width: 80px">
                                                                 <div class="btn-group pull-right">
@@ -99,8 +116,8 @@
                                                             </td>
                                                         </tr>
                                                     </draggable>
-
                                             </table>
+                                            <paginate :listItems = 'listItems' :per_page_list="info.per_page_list" @updatelist="updatelist"></paginate>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -127,18 +144,67 @@
 
         data() {
             return {
-                list: this.info,
-                elementDraggable : {}
+                data: {},
+                listItems: [],
+                filter: {},
+                page: 1,
+                isShowFilter: false,
+                elementDraggable : {},
             }
+        },
+
+        mounted() {
+
+          this.data = this.info;
+          this.listItems = this.info.data;
+
+          if (typeof this.data.filter === 'object' && this.data.filter != '') {
+            this.filter = this.data.filter;
+          }
+
+          this.checkIsFilterableResource();
         },
 
         watch: {
-            info: function(newVal, oldVal) {
-                this.list = newVal
-            }
+          info() {
+            this.data = this.info;
+            this.listItems = this.info.data;
+            this.checkIsFilterableResource();
+          }
         },
 
         methods: {
+
+            checkIsFilterableResource()
+            {
+              for (var prop in this.data.fields) {
+                if (this.data.fields[prop].is_filterable) {
+                  this.isShowFilter = true;
+                  return;
+                }
+              }
+
+              this.isShowFilter = false;
+            },
+
+            updatelist(response) {
+              this.listItems = response.list.data.data;
+              this.page = response.page;
+              this.listItems.per_page = response.per_page;
+
+              this.$emit('setPage', this.page)
+            },
+
+            clearFilter(key)
+            {
+              this.filter[key] = '';
+              this.$emit('search', this.filter)
+            },
+
+            changeFilter()
+            {
+              this.$emit('search', this.filter)
+            },
 
             checkMove: function(evt){
                 this.elementDraggable = evt.draggedContext.element.id;
@@ -148,7 +214,7 @@
 
                 this.$store.commit('updateData', {
                     'key': '__node',
-                    'value': this.list.node.page.id
+                    'value': this.data.node.page.id
                 });
 
                 this.$emit('add');
@@ -164,7 +230,7 @@
 
             onDraggableUpdate() {
                 let priorityIds = [];
-                this.list.data.data.forEach(function (element) {
+                this.data.data.data.forEach(function (element) {
                     priorityIds.push(element.id);
                 });
 
@@ -173,7 +239,10 @@
                         'ids' : priorityIds,
                         'element' : this.elementDraggable
                     })
-                    .then(response => {});
+                    .then(response => (this.$notify({text: response.data.message, type: response.data.status})))
+                    .catch(error => {
+                      this.$emit('showError', error);
+                    });
             },
 
             jsonConvert(field) {
@@ -197,8 +266,11 @@
                 this.axios
                     .get(`${this.$route.path}/list?node=` +id )
                     .then(response => {
-                        this.list = response.data;
+                        this.data = response.data;
+                        this.listItems = this.data.data;
                         this.$emit('loader', false);
+                    }).catch(error => {
+                        this.$emit('showError', error);
                     });
             },
         },

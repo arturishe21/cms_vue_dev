@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\PageInjection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
@@ -20,7 +19,9 @@ class PagesController extends Controller
             'order' => $modelDefinition->definition->getOrderByJson(),
             'filter' => $modelDefinition->definition->getFilter(),
             'component' => $modelDefinition->definition->component,
-            'node' => $modelDefinition->definition->getThisNode()
+            'node' => $modelDefinition->definition->getThisNode(),
+            'per_page_list' => $modelDefinition->definition->getPerPage(),
+            'actions' => $modelDefinition->definition->actions()->getActionsList()
         ]);
     }
 
@@ -29,9 +30,9 @@ class PagesController extends Controller
         return $this->getDataForForm($modelDefinition);
     }
 
-    public function store(PageInjection $modelDefinition): JsonResponse
+    public function store(PageInjection $modelDefinition, Request $request): JsonResponse
     {
-        return $modelDefinition->definition->saveAddForm(request()->all());
+        return $modelDefinition->definition->saveAddForm($request->all());
     }
 
     public function create(PageInjection $modelDefinition): JsonResponse
@@ -39,14 +40,14 @@ class PagesController extends Controller
         return $this->getDataForForm($modelDefinition);
     }
 
-    public function update(PageInjection $modelDefinition): JsonResponse
+    public function update(PageInjection $modelDefinition, Request $request): JsonResponse
     {
-        return $modelDefinition->definition->saveEditForm(request()->all(), $modelDefinition->model);
+        return $modelDefinition->definition->saveEditForm($request->all());
     }
 
     public function destroy(PageInjection $modelDefinition): JsonResponse
     {
-        return $modelDefinition->definition->remove($modelDefinition->model);
+        return $modelDefinition->definition->remove();
     }
 
     public function changePosition(PageInjection $modelDefinition, Request $request): JsonResponse
@@ -54,9 +55,19 @@ class PagesController extends Controller
         return $modelDefinition->definition->changePosition($request);
     }
 
-    public function setOrder(PageInjection $modelDefinition): void
+    public function setOrder(PageInjection $modelDefinition, Request $request): void
     {
-        session()->put($modelDefinition->definition->getSessionKeyOrder(), request()->all());
+        session()->put($modelDefinition->definition->getSessionKeyOrder(), $request->all());
+    }
+
+    public function setPerPage(PageInjection $modelDefinition, Request $request): void
+    {
+        session()->put($modelDefinition->definition->getSessionKeyPerPage(), $request->all());
+    }
+
+    public function filter(PageInjection $modelDefinition, Request $request): void
+    {
+        session()->put($modelDefinition->definition->getSessionKeyFilter(), $request->all());
     }
 
     public function clearOrder(PageInjection $modelDefinition): void
@@ -64,37 +75,18 @@ class PagesController extends Controller
         session()->forget($modelDefinition->definition->getSessionKeyOrder());
     }
 
-    public function filter(PageInjection $modelDefinition): void
+    public function search(PageInjection $modelDefinition, Request $request): Collection
     {
-        session()->put($modelDefinition->definition->getSessionKeyFilter(), request()->all());
-    }
+        $field = $modelDefinition->definition->getAllFields()[$request->get('key')];
 
-    public function search(PageInjection $modelDefinition): Collection
-    {
-        $field = $modelDefinition->definition->getAllFields()[request('key')];
-
-        return $field->search(request()->get('query'));
+        return $field->search($request->get('query'));
     }
 
     private function getDataForForm(PageInjection $modelDefinition): JsonResponse
     {
-        $fields = $modelDefinition->definition->getFields();
-
-        if (isset($fields[0])) {
-            $this->setValueField($fields, $modelDefinition);
-        } else {
-            foreach ($fields as $fieldBlock) {
-                $this->setValueField($fieldBlock, $modelDefinition);
-            }
-        }
-
-        return response()->json($fields);
-    }
-
-    private function setValueField($fields, $modelDefinition): void
-    {
-        foreach ($fields as $field) {
-            $field->setDefinition($modelDefinition->definition)->setValue($modelDefinition->model);
-        }
+        return response()->json([
+            'definition' => $modelDefinition->definition->getNameDefinition(),
+            'fields' => $modelDefinition->definition->getFields()
+        ]);
     }
 }

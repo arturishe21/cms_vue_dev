@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{TranslationsController, PagesController,
-    AdminController,ImagesController, TreeController, FilesController, DefinitionFieldController};
+    AdminController,ImagesController, FilesController, DefinitionFieldController};
 
 Route::pattern('translations', 'translations|translations-cms');
 
@@ -13,8 +13,6 @@ Route::group(['prefix' => 'cms'], function () {
     Route::get('{translations}/search', [TranslationsController::class, 'search']);
     Route::post('{translations}/update/{id}', [TranslationsController::class, 'update']);
 
-   // Route::get('tree/list', [TreeController::class, 'index']);
-
     Route::get('{table}/list', [PagesController::class, 'index']);
     Route::get('{table}/edit/{id}', [PagesController::class, 'edit']);
     Route::get('{table}/create', [PagesController::class, 'create']);
@@ -23,11 +21,14 @@ Route::group(['prefix' => 'cms'], function () {
     Route::post('{table}/save/{id}', [PagesController::class, 'update']);
     Route::post('{table}/save', [PagesController::class, 'store']);
 
+    Route::post('{table}/clone/{id}', [PagesController::class, 'clone']);
+    Route::post('{table}/preview/{id}', [PagesController::class, 'preview']);
+    Route::post('{table}/revisions/{id}', [PagesController::class, 'revisions']);
 
     Route::post('{table}/change-position', [PagesController::class, 'changePosition']);
     Route::post('{table}/set-order', [PagesController::class, 'setOrder']);
     Route::post('{table}/clear-order', [PagesController::class, 'clearOrder']);
-
+    Route::post('{table}/set-per-page', [PagesController::class, 'setPerPage']);
 
     Route::get('{table}/list/{id}/{relative}', [DefinitionFieldController::class, 'index']);
     Route::post('{table}/{id}/{relative}/save', [DefinitionFieldController::class, 'store']);

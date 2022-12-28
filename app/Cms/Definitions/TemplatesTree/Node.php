@@ -16,13 +16,13 @@ class Node extends Tree
     public function fields(): array
     {
         return [
-            'test' => [
+            'test1' => [
                 Id::make('#', 'id')->sortable(),
                 Text::make('Заголовок', 'title')->language(),
                 Select::make('Шаблон', 'template')->options($this->getTemplates()),
                 Text::make('slug', 'slug'),
                 Checkbox::make('Активный', 'is_active'),
-                File::make('Картинка', 'picture')->uploadPath('/')
+                File::make('Картинка', 'picture_en')
             ],
         ];
     }

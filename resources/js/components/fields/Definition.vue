@@ -84,7 +84,7 @@
                 :url=data.urlLoadDefinition
         ></create>
 
-        <edit v-show="editId"
+        <edit v-if="editId"
               :id="editId"
               :urlLoadData="urlLoadData"
               :urlSave = "urlSave"
@@ -110,6 +110,7 @@
                 isShowCreateWindow : false,
                 openItemDropdown : false,
                 editId : false,
+                page: 1
             }
         },
 
@@ -175,7 +176,9 @@
                     .then(response => {
                         this.list = response.data;
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => {
+                      this.$emit('showError', error);
+                    });
             },
 
             onDraggableUpdate() {
@@ -185,8 +188,15 @@
                 });
 
                 this.axios
-                    .post(`${this.data.urlLoadDefinition}/change-position`, priorityIds)
-                    .then(response => {});
+                    .post(`${this.data.urlLoadDefinition}/change-position`, {
+                      'ids' : priorityIds,
+                      'number_page' : this.page,
+                      'per_page' : this.list.per_page
+                    })
+                    .then(response => (this.$notify({text: response.data.message, type: response.data.status})))
+                    .catch(error => {
+                      this.$emit('showError', error);
+                    });
             },
 
             updatelist(response) {
@@ -211,9 +221,8 @@
                 this.openItemDropdown = false;
                 this.axios
                     .delete(`${this.data.urlLoadDefinition}/delete/${item.id}`)
-                    .then(response => {
-                        this.loadDefinitionData();
-                    });
+                    .then(response => {this.loadDefinitionData()})
+                    .catch(error => {this.$emit('showError', error);});
             },
 
             edit(item) {

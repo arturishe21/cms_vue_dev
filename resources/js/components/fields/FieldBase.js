@@ -1,14 +1,16 @@
 export default {
-    props : ['data', 'id'],
+    props : ['data', 'id', 'definition'],
 
     data () {
         return {
-            value: this.data.value
+            value: this.data.value,
+            language: 'ua'
         }
     },
 
     mounted() {
         this.updateData(this.data.key, this.data.value);
+        this.language = this.$store.getters.languages.site.default;
     },
 
     watch: {
@@ -29,6 +31,7 @@ export default {
 
         updateData (key, value) {
             this.$store.commit('updateData', {
+                'definition' : this.definition,
                 'key': key,
                 'value': value
             });

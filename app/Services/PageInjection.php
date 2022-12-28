@@ -10,12 +10,14 @@ class PageInjection
 {
     public Resource $definition;
     public Model $model;
+    private string $pathToDefinition = "App\\Cms\\Definitions\\";
 
     public function __construct(string $table, ?int $id)
     {
-        $modelDefinitionClass = "App\\Cms\\Definitions\\" . ucfirst(Str::camel($table));
+        $modelDefinitionClass = $this->pathToDefinition . ucfirst(Str::camel($table));
 
-        $this->definition =  app($modelDefinitionClass);
+        $this->definition = app($modelDefinitionClass);
         $this->model = $id ? $this->definition->model()->find($id) : $this->definition->model();
+        $this->definition->resolvedModel = $this->model;
     }
 }

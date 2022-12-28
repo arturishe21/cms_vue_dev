@@ -4,7 +4,7 @@
             <div class="table-responsive">
                 <fieldset style="padding:0">
                     <div v-for="field in fieldsGroup">
-                        <component :is="nameComponent(field.component)" :data="field" :id="id"></component>
+                        <component :is="nameComponent(field.component)" :data="field" :id="id" :definition="definition"></component>
                     </div>
                 </fieldset>
             </div>
@@ -25,7 +25,13 @@
                     <div class="table-responsive">
                         <fieldset style="padding:0">
                             <div v-for="field in fields">
-                                <component :is="nameComponent(field.component)" :data="field" :id="id"></component>
+                                <component
+                                    :is="nameComponent(field.component)"
+                                    @updateTemplate
+                                    :data="field"
+                                    :id="id"
+                                    :definition="definition"
+                                ></component>
                             </div>
                         </fieldset>
                     </div>
@@ -38,7 +44,7 @@
 <script>
     export default {
         name : 'formData',
-        props : ['fieldsGroup', 'id'],
+        props : ['fieldsGroup', 'id', 'definition'],
 
         data() {
             return {

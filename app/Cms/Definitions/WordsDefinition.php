@@ -12,14 +12,15 @@ class WordsDefinition extends Resource
 {
     public string $model = WordsDefinitionModel::class;
     public string $title = 'Описания';
-    protected string $orderBy = 'priority desc';
-    protected array $perPage = [10, 100, 1000];
+    protected string $orderBy = 'priority asc';
+    protected bool $isSortable = true;
+    protected array $perPage = [3, 100, 1000];
 
     public function fields(): array
     {
         return [
             Id::make('#', 'id')->sortable(),
-            Text::make('Заголовок', 'title'),
+            Text::make('Заголовок1', 'title'),
             Text::make('description', 'description'),
         ];
     }

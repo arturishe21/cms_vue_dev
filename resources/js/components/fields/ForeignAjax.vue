@@ -55,6 +55,7 @@
             updateData (key, value) {
 
                 this.$store.commit('updateData', {
+                    'definition' : this.definition,
                     'key': key,
                     'value': value ? value.id : null
                 });

@@ -54,8 +54,8 @@ class News extends Resource
             ],
 
             'SEO' => [
-                Text::make('Seo title', 'rr')
-                  //  ->language()
+                Text::make('Seo title', 'seo_title')
+                    ->language()
                     ->morphOne('seo')
                     ->onlyForm(),
                /* Textarea::make('Seo description', 'seo_description')
@@ -66,16 +66,16 @@ class News extends Resource
                   //  ->language()
                     ->morphOne('seo')
                     ->onlyForm(),*/
-                Checkbox::make('Seo noindex', 'is_seo_noindex')
+                /*Checkbox::make('Seo noindex', 'is_seo_noindex')
                     ->onlyForm()
-                    ->morphOne('seo'),
+                    ->morphOne('seo'),*/
             ]
         ];
     }
 
     public function actions(): Actions
     {
-        return Actions::make()->insert()->update()->preview()->delete()->clone();
+        return Actions::make()->insert()->update()->preview()->revisions()->delete()->clone();
     }
 
 }
