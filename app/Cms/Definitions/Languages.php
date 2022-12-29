@@ -2,10 +2,10 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Models\Language;
-use Vis\Builder\Fields\{Checkbox, Select};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Services\Actions;
+use Arturishe21\Cms\Models\Language;
+use Arturishe21\Cms\Fields\{Checkbox, Select};
+use Arturishe21\Cms\Definitions\Resource;
 
 class Languages extends Resource
 {

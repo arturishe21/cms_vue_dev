@@ -2,16 +2,13 @@
 
 namespace App\Models\MorphOne;
 
-use Illuminate\Database\Eloquent\Model;
+use Arturishe21\Cms\Models\BaseModel;
 use Vis\Builder\Fields\{Text, Textarea, Checkbox, Froala};
-use Vis\Builder\Helpers\Traits\TranslateTrait;
 
-class Seo extends Model
+class Seo extends BaseModel
 {
-    use TranslateTrait;
-
     protected $table = 'seo';
-    protected $guarded = [];
+    protected $guarded = ['id'];
     public $timestamps = false;
 
     public static function fieldsForDefinitions()

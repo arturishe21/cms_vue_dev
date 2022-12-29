@@ -23,19 +23,9 @@
     "autoload": {
         "classmap": [
             "src/Models",
-            "src/libs",
-            "src/Http/Controllers",
-            "src/Http/ControllersNew",
-            "src/Http/Services",
-            "src/Http/Interfaces",
-            "src/Http/Definitions",
-            "src/Http/Fields",
-            "src/Http/Traits",
             "src/Http/Middleware",
             "src/Console",
-            "src/Migrations",
-            "src/Seeds",
-            "src/Settings"
+            "src/Migrations"
         ],
         "psr-4": {
             "Arturishe21\\Cms\\": "src/"

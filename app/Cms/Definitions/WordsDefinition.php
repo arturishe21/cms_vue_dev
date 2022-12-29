@@ -3,10 +3,10 @@
 namespace App\Cms\Definitions;
 
 use App\Models\WordsDefinition as WordsDefinitionModel;
-use Vis\Builder\Fields\{
+use Arturishe21\Cms\Fields\{
     Id,
     Text};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Definitions\Resource;
 
 class WordsDefinition extends Resource
 {

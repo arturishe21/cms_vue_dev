@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use App\Models\MorphOne\Seo;
+use Arturishe21\Cms\Models\BaseModel;
 
 class News extends BaseModel
 {

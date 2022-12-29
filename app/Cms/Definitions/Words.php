@@ -4,8 +4,8 @@ namespace App\Cms\Definitions;
 
 use App\Models\Word;
 use Carbon\Carbon;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Fields\{Date,
+use Arturishe21\Cms\Services\Actions;
+use Arturishe21\Cms\Fields\{Date,
     Foreign,
     Froala,
     Id,
@@ -18,9 +18,9 @@ use Vis\Builder\Fields\{Date,
     MultiSelect,
     Definition,
     ManyToManyMultiSelect};
-use Vis\Builder\Definitions\Resource;
-use Vis\Builder\Fields\Relations\Options;
-use Vis\Builder\Services\Export;
+use Arturishe21\Cms\Definitions\Resource;
+use Arturishe21\Cms\Fields\Relations\Options;
+use Arturishe21\Cms\Services\Export;
 
 class Words extends Resource
 {

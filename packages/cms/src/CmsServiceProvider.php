@@ -5,7 +5,8 @@ namespace Arturishe21\Cms;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Arturishe21\Cms\Console\{InstallCommand, GeneratePassword, CreateConfig, CreateImgWebp};
-use Arturishe21\Cms\Http\Middleware\{Authenticate, AuthenticateFrontend};
+use Arturishe21\Cms\Http\Middleware\{Authenticate, AuthenticateFrontend, LocalizationMiddlewareRedirect};
+use Illuminate\Contracts\Http\Kernel;
 
 class CmsServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,7 @@ class CmsServiceProvider extends ServiceProvider
 
         $this->setupRoutes();
 
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'admin');
+        $this->loadViewsFrom(realpath(__DIR__. '/resources/views'), 'admin');
 
         $this->publishes([
             __DIR__
@@ -40,7 +41,7 @@ class CmsServiceProvider extends ServiceProvider
         ], 'public');*/
 
         $this->publishes([
-            realpath(__DIR__.'/Migrations') => $this->app->databasePath() . '/migrations',
+            realpath(__DIR__ . '/Migrations') => $this->app->databasePath() . '/migrations',
         ]);
 
     }
@@ -57,7 +58,7 @@ class CmsServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
+        $this->app[Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
 
         if (method_exists(Router::class, 'aliasMiddleware')) {
             $this->app[Router::class]
@@ -95,6 +96,6 @@ class CmsServiceProvider extends ServiceProvider
 
     private function setupRoutes(): void
     {
-        require __DIR__. '/Routes/web.php.php';
+        require __DIR__. '/Routes/web.php';
     }
 }

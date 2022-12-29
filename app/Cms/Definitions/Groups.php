@@ -3,14 +3,14 @@
 namespace App\Cms\Definitions;
 
 use App\Models\Group;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Fields\{
+use Arturishe21\Cms\Services\Actions;
+use Arturishe21\Cms\Fields\{
     Id,
     Text,
     Permissions
 };
 
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Definitions\Resource;
 
 class Groups extends Resource
 {

@@ -2,9 +2,9 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
+use Arturishe21\Cms\Services\Actions;
 use App\Models\Article;
-use Vis\Builder\Fields\{Color,
+use Arturishe21\Cms\Fields\{Color,
     Date,
     Froala,
     Hidden,
@@ -23,7 +23,7 @@ use Vis\Builder\Fields\{Color,
     Text,
     Definition,
     Textarea};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Definitions\Resource;
 
 class Authors extends Resource
 {

@@ -1,12 +1,12 @@
 <?php
 
-use Vis\Builder\Models\TranslationsCms;
-use Vis\Builder\Models\TranslationsPhrasesCms;
-use Vis\Builder\Models\Language;
+use Arturishe21\Cms\Models\TranslationsCms;
+use Arturishe21\Cms\Models\TranslationsPhrasesCms;
+use Arturishe21\Cms\Models\Language;
 use Illuminate\Support\Facades\Cache;
 use App\Cms\Definitions\Settings;
 use Illuminate\Support\Facades\App;
-use Vis\Builder\Services\Translate;
+use Arturishe21\Cms\Services\Translate;
 
 if (! function_exists('defaultLanguage')) {
 

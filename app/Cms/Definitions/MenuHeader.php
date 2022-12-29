@@ -2,9 +2,9 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Definitions\ResourceAdditionTree;
+use Arturishe21\Cms\Definitions\ResourceAdditionTree;
 use App\Models\MenuHeader as MenuHeaderModel;
-use Vis\Builder\Fields\{Hidden, Text, Relations\Options, Checkbox};
+use Arturishe21\Cms\Fields\{Hidden, Text, Relations\Options, Checkbox};
 use App\Fields\ForeignTree;
 
 class MenuHeader extends ResourceAdditionTree

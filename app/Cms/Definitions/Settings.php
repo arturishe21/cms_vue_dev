@@ -2,14 +2,15 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Fields\{Checkbox, File, ForeignAjax, Froala, Hidden, Id, Select, Text, Relations\Options, Textarea};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Fields\{Checkbox, File, ForeignAjax, Froala, Hidden, Id, Select, Text, Relations\Options, Textarea};
+use Arturishe21\Cms\Definitions\Resource;
 use Illuminate\Validation\Rule;
-use Vis\Builder\Fields\Custom\TextSetting;
+use Arturishe21\Cms\Fields\Custom\TextSetting;
+use App\Models\Setting;
 
 class Settings extends Resource
 {
-    public string $model = \Vis\Builder\Setting::class;
+    public string $model = Setting::class;
     public string $title = 'Настройки';
     protected string $orderBy = 'id desc';
 

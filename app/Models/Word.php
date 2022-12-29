@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Arturishe21\Cms\Models\BaseModel;
+
 class Word extends BaseModel
 {
     use \Bkwld\Cloner\Cloneable;

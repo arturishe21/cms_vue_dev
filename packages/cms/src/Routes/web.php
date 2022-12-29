@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{TranslationsController, PagesController,
+use Arturishe21\Cms\Http\Controllers\{TranslationsController, PagesController,
     AdminController,ImagesController, FilesController, DefinitionFieldController};
 
 Route::pattern('translations', 'translations|translations-cms');
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'cms'], function () {
 });
 
 Route::get('{any}', function () {
-    return view('welcome');
+    return view('admin::app');
 })->where('any', '.*');
 
 

@@ -3,10 +3,10 @@
 namespace App\Cms\Definitions\TemplatesTree;
 
 use App\Cms\Definitions\Tree;
-use Vis\Builder\Fields\{Definition, File, Froala, Id, Image, Text, Checkbox, Select};
-use Vis\Builder\Services\ButtonExample;
-use Vis\Builder\Services\Export;
-use Vis\Builder\Services\Import;
+use Arturishe21\Cms\Fields\{Definition, File, Froala, Id, Image, Text, Checkbox, Select};
+use Arturishe21\Cms\Services\ButtonExample;
+use Arturishe21\Cms\Services\Export;
+use Arturishe21\Cms\Services\Import;
 
 class Node extends Tree
 {

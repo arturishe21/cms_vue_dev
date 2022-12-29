@@ -3,13 +3,13 @@
 namespace App\Cms\Definitions\TemplatesTree;
 
 use App\Cms\Definitions\Tree;
-use Vis\Builder\Fields\{
+use Arturishe21\Cms\Fields\{
     Select,
     Froala,
     Id,
     Text
 };
-use Vis\Builder\Fields\Textarea;
+use Arturishe21\Cms\Fields\Textarea;
 
 class Contacts extends Tree
 {

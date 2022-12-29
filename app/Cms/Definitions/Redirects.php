@@ -3,9 +3,9 @@
 namespace App\Cms\Definitions;
 
 use Litvin\Redirectmap\Models\RedirectMap;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Fields\{Id, Select, Text};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Services\Actions;
+use Arturishe21\Cms\Fields\{Id, Select, Text};
+use Arturishe21\Cms\Definitions\Resource;
 use Litvin\Redirectmap\Service\Import;
 
 class Redirects extends Resource

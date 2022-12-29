@@ -2,7 +2,7 @@
 
 namespace App\Cms;
 
-use Vis\Builder\Setting\AdminBase;
+use Arturishe21\Cms\Settings\AdminBase;
 
 class Admin extends AdminBase
 {

@@ -3,10 +3,10 @@
 namespace App\Cms\Definitions\HasMany;
 
 use App\Models\TestDefinition3 as TestDefinition3Model;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Revision;
-use Vis\Builder\Fields\{Hidden, Id, Datetime, Text, SelectWithPicture, Definition};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Services\Actions;
+use Arturishe21\Cms\Revision;
+use Arturishe21\Cms\Fields\{Hidden, Id, Datetime, Text, SelectWithPicture, Definition};
+use Arturishe21\Cms\Definitions\Resource;
 
 class TestDefinition3 extends Resource
 {

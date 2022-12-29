@@ -3,13 +3,13 @@
 namespace App\Cms\Definitions;
 
 use App\Models\User;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Fields\{Date, ManyToMany, ManyToManyAjax, Relations\Options, Password, Checkbox, Id, Text};
+use Arturishe21\Cms\Services\Actions;
+use Arturishe21\Cms\Fields\{Date, ManyToMany, ManyToManyAjax, Relations\Options, Password, Checkbox, Id, Text};
 use Illuminate\Validation\Rule;
-use App\Fields\Virtual;
-use Vis\Builder\Definitions\Resource;
-use Vis\Builder\Services\ButtonExample;
-use Vis\Builder\Services\Import;
+use Arturishe21\Cms\Fields\Virtual;
+use Arturishe21\Cms\Definitions\Resource;
+use Arturishe21\Cms\Services\ButtonExample;
+use Arturishe21\Cms\Services\Import;
 use App\Services\ExportCustom;
 use App\Cards\ChartUser;
 

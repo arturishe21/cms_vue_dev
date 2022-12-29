@@ -169,7 +169,7 @@ return [
          * Package Service Providers...
          */
 
-        Vis\Builder\BuilderServiceProvider::class,
+        Arturishe21\Cms\CmsServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         //   Baum\Providers\BaumServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,

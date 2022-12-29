@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\App;
-use Vis\Builder\Tree as TreeBuilder;
+use Arturishe21\Cms\Models\Tree as TreeBuilder;
 use Illuminate\Support\Facades\Request;
 use App\Models\MorphOne\Seo;
 
@@ -30,11 +30,6 @@ class Tree extends TreeBuilder
     }
 
     // end getFirstDepthNodes
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', 1);
-    }
 
     public function scopeIsMenu($query)
     {

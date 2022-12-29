@@ -1,5 +1,5 @@
 <?php
-
+/*
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{TranslationsController, PagesController,
     AdminController,ImagesController, FilesController, DefinitionFieldController};
@@ -49,4 +49,4 @@ Route::group(['prefix' => 'cms'], function () {
     })->where('any', '.*');
 
 
-
+*/

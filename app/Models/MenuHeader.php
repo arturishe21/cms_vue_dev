@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Vis\Builder\Tree as TreeBuilder;
+use Arturishe21\Cms\Models\Tree as TreeBuilder;
 
 class MenuHeader extends TreeBuilder
 {

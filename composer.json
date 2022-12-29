@@ -37,7 +37,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Vis\\Builder\\": "packages/builder_lara_5/src/"
+            "Arturishe21\\Cms\\": "packages/cms/src/"
         }
     },
     "autoload-dev": {

@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Arturishe21\Cms\Models\BaseModel;
 
-class Setting extends Model
+class Setting extends BaseModel
 {
-    use \Vis\Builder\Helpers\Traits\TranslateTrait;
-
     protected $table = 'settings';
     protected $fillable = [];
     public $timestamps = false;

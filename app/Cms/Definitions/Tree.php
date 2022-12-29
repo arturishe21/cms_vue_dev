@@ -3,12 +3,11 @@
 namespace App\Cms\Definitions;
 
 use App\Cms\Definitions\TemplatesTree\{Node, Contacts};
-use Vis\Builder\Definitions\ResourceTree;
-use Vis\Builder\Fields\Checkbox;
-use Vis\Builder\Fields\File;
-use Vis\Builder\Fields\Hidden;
-use Vis\Builder\Fields\Select;
-use Vis\Builder\Fields\Text;
+use Arturishe21\Cms\Definitions\ResourceTree;
+use Arturishe21\Cms\Fields\Checkbox;
+use Arturishe21\Cms\Fields\Hidden;
+use Arturishe21\Cms\Fields\Select;
+use Arturishe21\Cms\Fields\Text;
 
 class Tree extends ResourceTree
 {

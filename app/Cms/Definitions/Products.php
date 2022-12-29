@@ -2,10 +2,10 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
+use Arturishe21\Cms\Services\Actions;
 use App\Models\Product;
-use Vis\Builder\Fields\{Datetime, Id, Text};
-use Vis\Builder\Definitions\Resource;
+use Arturishe21\Cms\Fields\{Datetime, Id, Text};
+use Arturishe21\Cms\Definitions\Resource;
 
 class Products extends Resource
 {
