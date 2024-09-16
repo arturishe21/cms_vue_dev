@@ -4,7 +4,7 @@ namespace Arturishe21\Cms\Fields;
 
 class MultiSelect extends Select
 {
-    public $onlyForm = true;
+    public bool $onlyForm = true;
 
     public function getValueForList($definition)
     {

@@ -26,7 +26,7 @@ class Text extends Field
         return $this;
     }
 
-    protected function meta()
+    protected function meta(): array
     {
         return [
             'transliterationField' => $this->transliterationField,

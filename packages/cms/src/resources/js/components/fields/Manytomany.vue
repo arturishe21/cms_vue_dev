@@ -9,7 +9,8 @@
                             :options="data.options"
                             :multiple="true"
                             placeholder="Выбрать из списка"
-                            track-by="id" label="name"
+                            track-by="id"
+                            label="name"
                     >
                     </multiselect>
                 </div>

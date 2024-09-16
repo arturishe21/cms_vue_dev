@@ -2,8 +2,8 @@
 
 namespace Arturishe21\Cms\Http\Controllers;
 
-use App\Services\FileUpload;
-use Vis\Builder\StorageFile;
+use Arturishe21\Cms\Services\FileUpload;
+use Arturishe21\Cms\Models\StorageFile;
 use App\Http\Controllers\Controller;
 
 class FilesController extends Controller

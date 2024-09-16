@@ -3,7 +3,6 @@ import Vue from 'vue/dist/vue.esm.js';
 window.Vue = require('vue');
 import Vuex from 'vuex'
 
-
 import App from './components/App.vue';
 import VueRouter from 'vue-router';
 import VueAxios from 'vue-axios';
@@ -37,11 +36,19 @@ import ForeignAjax from './components/fields/ForeignAjax.vue'
 import Definition from './components/fields/Definition.vue'
 import MultiFile from './components/fields/MultiFile.vue'
 import MultiImage from './components/fields/MultiImage.vue'
+import CustomField from './components/fields/Custom.vue'
+import Permissions from './components/fields/Permissions.vue'
+
 
 import FilterText from './components/filters/Text.vue'
 import FilterForeignAjax from './components/filters/ForeignAjax.vue'
 import FilterSelect from './components/filters/Select.vue'
 import FilterDate from './components/filters/Date.vue'
+
+import FastCheckbox from './components/fast_edit/Checkbox.vue'
+import FastSelect from './components/fast_edit/Select.vue'
+import FastDate from './components/fast_edit/Date.vue'
+import FastForeignAjax from './components/fast_edit/ForeignAjax.vue'
 
 import Actions from './components/partials/Actions.vue'
 
@@ -78,11 +85,18 @@ Vue.component('ForeignajaxField', ForeignAjax);
 Vue.component('DefinitionField', Definition);
 Vue.component('multifileField', MultiFile);
 Vue.component('multiimageField', MultiImage);
+Vue.component('permissionsField', Permissions);
 
 Vue.component('FilterText', FilterText);
 Vue.component('FilterForeignAjax', FilterForeignAjax);
 Vue.component('FilterSelect', FilterSelect);
 Vue.component('FilterDate', FilterDate);
+Vue.component('customField', CustomField);
+
+Vue.component('fast_checkbox', FastCheckbox);
+Vue.component('fast_select', FastSelect);
+Vue.component('fast_date', FastDate);
+Vue.component('fast_foreign_ajax', FastForeignAjax);
 
 Vue.component('paginate', Paginate);
 Vue.component('formData', FormCenter);
@@ -105,8 +119,11 @@ Vue.use(Vuex);
 Vue.use(Translit, {});
 Vue.use(Notifications);
 
+Vue.prototype.$urlCms = '/' + document.querySelector('meta[name="path"]').content;
+
 const router = new VueRouter({
     mode: 'history',
+    base: Vue.prototype.$urlCms,
     routes: routes
 });
 

@@ -8,16 +8,16 @@ class Definition extends Field
 {
     protected $definitionRelation;
     protected $relation;
-    protected $onlyForm = true;
+    protected bool $onlyForm = true;
     protected $typeRelative;
     protected bool $isFieldForUpdateCreate = false;
 
-    public function getNameField() : string
+    public function getNameField(): string
     {
         return $this->relation;
     }
 
-    public function hasMany($relation, $classDefinitionRelation = null)
+    public function hasMany($relation, $classDefinitionRelation = null): self
     {
         $this->relation = $relation;
         $this->definitionRelation = $classDefinitionRelation;
@@ -28,10 +28,10 @@ class Definition extends Field
 
     public function getDefinitionRelation()
     {
-        return  app($this->definitionRelation);
+        return app($this->definitionRelation);
     }
 
-    public function morphMany($relation, $classDefinitionRelation = null)
+    public function morphMany($relation, $classDefinitionRelation = null): self
     {
         $this->relation = $relation;
         $this->definitionRelation = $classDefinitionRelation;
@@ -49,7 +49,7 @@ class Definition extends Field
         return implode('_', $arrayName);
     }
 
-    protected function meta()
+    protected function meta(): array
     {
         return [
             'urlLoadDefinition' => $this->getListOfDefinition(),

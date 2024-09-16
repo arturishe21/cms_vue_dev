@@ -36,7 +36,7 @@ class Authenticate
                 ], '401');
             }
 
-            return redirect()->guest('login');
+            return redirect()->route('cms.login.page');
         }
 
         if (!Activation::completed($user)) {
@@ -59,7 +59,7 @@ class Authenticate
         Session::flash('login_not_found', $message);
         Sentinel::logout();
 
-        return Redirect::route('cms.login.index');
+        return redirect()->route('cms.login.page');
     }
 
     private function checkIp($request)

@@ -2,7 +2,7 @@
 
 namespace Arturishe21\Cms\Fields;
 
-use App\Services\FileUpload;
+use Arturishe21\Cms\Services\FileUpload;
 use Illuminate\Database\Eloquent\Model;
 
 class File extends Field
@@ -58,5 +58,4 @@ class File extends Field
     {
         return (new FileUpload($this))->handle();
     }
-
 }

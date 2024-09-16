@@ -26,12 +26,12 @@ use Arturishe21\Cms\Definitions\Resource;
 
 class Comment extends Resource
 {
-    public $model = \App\Models\Comment2::class;
-    public $title = 'Комментарии';
-    protected $orderBy = 'priority asc';
-    protected $isSortable = true;
+    public string $model = \App\Models\Comment::class;
+    public string $title = 'Комментарии';
+    protected string $orderBy = 'priority asc';
+    protected bool $isSortable = true;
 
-    public function fields()
+    public function fields(): array
     {
         return [
             'test' => [
@@ -43,8 +43,7 @@ class Comment extends Resource
         ];
     }
 
-
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->preview()->delete()->clone();
     }

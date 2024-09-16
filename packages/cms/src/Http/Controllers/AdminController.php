@@ -12,14 +12,18 @@ class AdminController extends Controller
     {
         return response()->json([
             'menu'=> $admin->menu(),
+            'logo' => $admin->getLogo(),
             'languages' => [
                 'site' => [
-                    'default' => defaultLanguage(),
+                    'default' => 'en', // defaultLanguage(),
                     'all' => languagesOfSite()
                 ],
                 'cms' => [
-                    'default' => 'ru',
-                    'all' => ['ru', 'en']
+                    'default' => 'en',
+                    'all' => [
+                        'ru' => 'Русский',
+                        'en' => 'English'
+                    ]
                 ]
             ],
         ]);

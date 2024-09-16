@@ -99,7 +99,7 @@ if (! function_exists('glide')) {
             return "//via.placeholder.com/{$width}x{$height}";
         }
 
-        return (new Vis\Builder\Img())->get($source, $options);
+        return (new Arturishe21\Cms\Libs\Img())->get($source, $options);
     }
 }
 
@@ -115,8 +115,10 @@ if (! function_exists('geturl')) {
 }
 
 if (! function_exists('__cms')) {
-    function __cms($phrase) : ?string
+    function __cms($phrase): ?string
     {
+        return $phrase;
+
         $thisLang = Cookie::get('lang_admin', config('builder.translations.cms.language_default'));
 
         $arrayTranslate = TranslationsPhrasesCms::fillCacheTrans();

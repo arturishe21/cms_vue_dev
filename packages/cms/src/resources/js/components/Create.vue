@@ -67,6 +67,9 @@
             data () {
                 return this.$store.getters.getData(this.definition);
             },
+            urlAction() {
+              return this.$urlCms + this.$route.path;
+            }
         },
 
         methods: {
@@ -89,7 +92,7 @@
             loadData() {
                 this.styleWindow.top = window.scrollY + 'px';
 
-                this.axios.get(`${this.url}/create`)
+                this.axios.get(`${this.urlAction}/create`)
                     .then(response => {
                         this.fieldsGroup = response.data.fields;
                         this.definition = response.data.definition;

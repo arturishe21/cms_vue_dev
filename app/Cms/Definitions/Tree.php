@@ -16,9 +16,9 @@ class Tree extends ResourceTree
         return [
             Hidden::make('#', 'id'),
             Text::make('Заголовок', 'title')->language()->filter(),
-            Select::make('Шаблон', 'template')->options($this->getTemplates())->filter(),
+            Select::make('Шаблон', 'template')->options($this->getTemplates())->filter()->fastEdit(),
             Text::make('slug', 'slug')->transliteration('title', false),
-            Checkbox::make('Активный', 'is_active'),
+            Checkbox::make('Активный', 'is_active')->fastEdit()
             //File::make('Картинка', 'picture_en')
         ];
     }

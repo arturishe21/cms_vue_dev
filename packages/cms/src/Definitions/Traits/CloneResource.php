@@ -41,11 +41,4 @@ trait CloneResource
             $this->cloneRecursively($pageChild->id, $page->id);
         }
     }
-
-    public function clone(int $id): JsonResponse
-    {
-        $this->model()->find($id)->duplicate();
-
-        return $this->returnSuccess();
-    }
 }

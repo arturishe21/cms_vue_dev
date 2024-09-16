@@ -51,9 +51,7 @@
         },
 
         methods: {
-
             updateData (key, value) {
-
                 this.$store.commit('updateData', {
                     'definition' : this.definition,
                     'key': key,
@@ -65,7 +63,7 @@
 
                 if (query) {
                     this.isLoading = true;
-                    this.axios.post(`${this.$route.path}/search`,
+                    this.axios.post(`${this.$urlCms + this.$route.path}/search`,
                         {
                             'query' : query,
                             'key' : this.data.key
@@ -74,7 +72,9 @@
                             this.isLoading = false;
                             this.results = response.data;
                         })
-                        .catch(err => console.log(err))
+                        .catch(error => {
+                          this.$notify({text: error.response.data.message, type: 'error'});
+                        });
                 }
             }
         }

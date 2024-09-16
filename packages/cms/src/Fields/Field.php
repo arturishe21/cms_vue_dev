@@ -13,29 +13,29 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Field implements JsonSerializable
 {
-    protected $name;
-    protected $key;
-    protected $onlyForm = false;
+    protected string $name;
+    protected string $key;
+    protected bool $onlyForm = false;
+    protected bool $isFastEdit = false;
     public $value = '';
-    protected $isSortable = false;
-    protected $isFilterable = false;
-    protected $defaultValue;
+    protected bool $isSortable = false;
+    protected bool $isFilterable = false;
+    protected mixed $defaultValue = '';
     protected array $rules = [];
     protected $language;
-    protected $isManyToMany = false;
+    protected bool $isManyToMany = false;
     protected $filter;
     protected $relationHasOne;
     protected $relationMorphOne;
     protected $classNameField;
-    protected $allData;
     protected $locale;
-    protected $isSaveOnChange = false;
     protected Resource $definition;
     protected bool $isFieldForUpdateCreate = true;
     protected LanguageRepository $languageRepository;
-    protected string $filterType = 'FilterText';
+    protected string $filterComponent = 'FilterText';
     protected PageInjection $classPageInjection;
     protected ?Model $model = null;
+    protected string $fastEditComponent = '';
 
     public function __construct(string $name, $key = null)
     {
@@ -146,9 +146,11 @@ class Field implements JsonSerializable
     {
         $value = $this->model->{$this->key} ?: $this->defaultValue;
 
-        if ($this->getMorphOne()) {
+        if ($this->getMorphOne() || $this->getHasOne()) {
 
-            if ($relation = $this->model->{$this->getMorphOne()}) {
+            $relationModel = $this->getHasOne() ?: $this->getMorphOne();
+
+            if ($relation = $this->model->{$relationModel}) {
                 $value = $relation->{$this->getNameField()};
             } else {
                 $value = '';
@@ -162,24 +164,35 @@ class Field implements JsonSerializable
         return $value;
     }
 
-    public function isOnlyForm()
+    public function isOnlyForm(): bool
     {
         return $this->onlyForm;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return __cms($this->name);
     }
 
-    public function getNameField()
+    public function getNameField(): string
     {
         return $this->key;
     }
 
-    public function getValueForList(Model $model): ?string
+    public function getValueForList(Model $model): mixed
     {
         $value = $model->{$this->key};
+
+        if ($this->getMorphOne() || $this->getHasOne()) {
+
+            $relationModel = $this->getHasOne() ?: $this->getMorphOne();
+
+            if ($relation = $model->{$relationModel}) {
+                $value = $relation->{$this->getNameField()};
+            } else {
+                $value = '';
+            }
+        }
 
         if ($this->language) {
             return json_decode($value)->{$this->locale} ?? null;
@@ -196,7 +209,7 @@ class Field implements JsonSerializable
             $filter['filter'][$this->getNameField()] : '';
     }
 
-    public function filter()
+    public function filter(): self
     {
         $this->isFilterable = true;
 
@@ -208,7 +221,7 @@ class Field implements JsonSerializable
         return $this->isFilterable;
     }
 
-    public function default(string $value): self
+    public function default(mixed $value): self
     {
         $this->defaultValue = $value;
 
@@ -222,7 +235,7 @@ class Field implements JsonSerializable
         return $this;
     }
 
-    public function isSortable()
+    public function isSortable(): bool
     {
         return $this->isSortable;
     }
@@ -246,6 +259,13 @@ class Field implements JsonSerializable
         return $this->language;
     }
 
+    public function fastEdit(): self
+    {
+        $this->isFastEdit = 1;
+
+        return $this;
+    }
+
     public function rules(array $rules): self
     {
         $this->rules = $rules;
@@ -263,7 +283,7 @@ class Field implements JsonSerializable
         return mb_convert_case($query, MB_CASE_TITLE, "UTF-8");
     }
 
-    public function isManyToMany()
+    public function isManyToMany(): bool
     {
         return $this->isManyToMany;
     }
@@ -328,11 +348,6 @@ class Field implements JsonSerializable
         $query->where($this->getNameField(), '=', $value);
     }
 
-    protected function meta()
-    {
-        return [];
-    }
-
     public function jsonSerialize()
     {
         return array_merge([
@@ -340,13 +355,19 @@ class Field implements JsonSerializable
             'key' => $this->getNameField(),
             'title' => $this->name,
             'is_sortable' => $this->isSortable(),
+            'is_fast_edit' => $this->isFastEdit,
+            'fast_edit_component' => $this->fastEditComponent,
             'is_filterable' => $this->isFilterable(),
-            'filterType' => $this->filterType,
+            'filterType' => $this->filterComponent,
             'value' => $this->getValue(),
             'languages' => $this->getLanguage(),
 
         ], $this->meta());
     }
 
+    protected function meta(): array
+    {
+        return [];
+    }
 }
 

@@ -3,39 +3,37 @@
 namespace Arturishe21\Cms\Models;
 
 use Illuminate\Support\Facades\Cache;
-use Request;
 use Kalnoy\Nestedset\NodeTrait;
 use Bkwld\Cloner\Cloneable;
 
-/**
- * Class Tree.
- */
 class Tree extends BaseModel
 {
     use Cloneable,
         NodeTrait;
 
-    public function getLftName()
+    protected $table = 'tb_tree';
+
+    public function getLftName(): string
     {
         return 'lft';
     }
 
-    public function getRgtName()
+    public function getRgtName(): string
     {
         return 'rgt';
     }
 
-    public function getParentIdName()
+    public function getParentIdName(): string
     {
         return 'parent_id';
     }
 
-    public function makeFirstChildOf($root)
+    public function makeFirstChildOf($root): void
     {
         $this->appendToNode($root)->save();
     }
 
-    public function makeChildOf($root)
+    public function makeChildOf($root): void
     {
         $this->appendToNode($root)->save();
     }
@@ -50,60 +48,11 @@ class Tree extends BaseModel
      * @var array
      */
     protected $fillable = [];
-    /**
-     * @var array
-     */
-    protected $revisionFormattedFieldNames = [
-        'title'             => 'Название',
-        'description'       => 'Описание',
-        'is_active'         => 'Активация',
-        'picture'           => 'Изображение',
-        'short_description' => 'Короткий текст',
-        'created_at'        => 'Дата создания',
-    ];
-    /**
-     * @var array
-     */
-    protected $revisionFormattedFields = [
-        '1'          => 'string:<strong>%s</strong>',
-        'public'     => 'boolean:No|Yes',
-        'deleted_at' => 'isEmpty:Active|Deleted',
-    ];
-    /**
-     * @var bool
-     */
-    protected $revisionEnabled = true;
-    /**
-     * @var bool
-     */
-    protected $revisionCleanup = true;
-    /**
-     * @var int
-     */
-    protected $historyLimit = 500;
 
     /**
      * @var string
      */
     protected $fileDefinition = 'tree';
-
-    /**
-     * @return array
-     */
-    public function getFillable()
-    {
-        return $this->fillable;
-    }
-
-    /**
-     * @param array $params
-     */
-    public function setFillable(array $params)
-    {
-        $this->fillable = $params;
-    }
-
-    protected $table = 'tb_tree';
 
     protected $_nodeUrl;
 
@@ -140,12 +89,7 @@ class Tree extends BaseModel
         $this->_nodeUrl = $url;
     }
 
-    // end setUrl
-
-    /**
-     * @return mixed|string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
@@ -155,19 +99,16 @@ class Tree extends BaseModel
             return $this->_nodeUrl;
         }
 
-        return '/'.$this->_nodeUrl;
+        return '/'. $this->_nodeUrl;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrlNoLocation()
+    public function getUrlNoLocation(): string
     {
         if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
-        return '/'.$this->_nodeUrl;
+        return '/' . $this->_nodeUrl;
     }
 
     /**
@@ -186,16 +127,11 @@ class Tree extends BaseModel
         return $this->getGeneratedUrlInCache();
     }
 
-    // end getGeneratedUrl
-
     public function getAncestorsAndSelf()
     {
         return self::defaultOrder()->ancestorsAndSelf($this->id);
     }
 
-    /**
-     * @return string
-     */
     private function getGeneratedUrlInCache()
     {
         $all = $this->getAncestorsAndSelf();

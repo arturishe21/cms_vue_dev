@@ -4,7 +4,7 @@ namespace Arturishe21\Cms\Fields;
 
 class MultiImage extends Image
 {
-    public $onlyForm = true;
+    public bool $onlyForm = true;
 
     public function getValue()
     {

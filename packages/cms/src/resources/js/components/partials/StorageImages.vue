@@ -1,5 +1,5 @@
 <template>
-    <div class="modal files_uploaded_table" style="display:block;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal files_uploaded_table" style="display:block; " role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
             <div class="modal-content">
@@ -7,8 +7,8 @@
                     <span class="close_window" @click="close"> &times; </span>
                     <h4 class="modal-title" id="modal_form_label">Выберите изображения</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="smart-form" style="padding: 0 20px">
+                <div class="modal-body" style="padding: 0 30px">
+                    <div class="smart-form">
                         <div class="row filter_gallary_images" style="padding-top: 10px">
                             <section  class="col col-4">
                                 <label class="input">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="padding-top: 5px">
                     <span class="btn btn-success btn-sm" @click="addToImages">Выбрать</span>
                     <span class="btn btn-default" @click="close"> Отмена</span>
                 </div>
@@ -94,7 +94,7 @@
                 page = page || 1;
 
                 this.axios
-                    .post(`/cms/load-storage-images?page=`  + page)
+                    .post(`${this.$urlCms}/load-storage-images?page=`  + page)
                     .then(response => {
                         this.images = response.data.images
                     })

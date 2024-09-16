@@ -2,39 +2,27 @@
 
 namespace Arturishe21\Cms\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Arturishe21\Cms\Traits\Rememberable;
 
-class Language extends Model
+class Language extends BaseModel
 {
     use Rememberable;
 
     protected $table = 'languages';
-    protected $fillable = [];
     public $timestamps = false;
-    private $supportedLocales;
+    private array $supportedLocales;
 
     public function __construct()
     {
         $this->supportedLocales = config('laravellocalization.supportedLocales');
     }
 
-    public static function scopeActive($query)
-    {
-        return $query->where('is_active', '1');
-    }
-
-    public static function scopeOrderPriority($query)
-    {
-        return $query->orderBy('priority', 'asc');
-    }
-
-    public function getName()
+    public function getName(): string
     {
         return $this->supportedLocales[$this->language]['name'] ?? '';
     }
 
-    public function supportedLocales()
+    public function supportedLocales(): array
     {
         $result = [];
 
@@ -45,7 +33,7 @@ class Language extends Model
         return $result;
     }
 
-    public static function getDefaultLanguage()
+    public static function getDefaultLanguage(): self
     {
         return self::active()->orderPriority()
             ->rememberForever()->cacheTags(['languages'])

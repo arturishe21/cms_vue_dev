@@ -6,21 +6,23 @@ use App\Http\Controllers\Controller;
 use Arturishe21\Cms\Services\TranslationInjection;
 use Arturishe21\Cms\Models\Translations;
 use Arturishe21\Cms\Models\TranslationsCms;
+use Illuminate\Http\JsonResponse;
 
 class TranslationsController extends Controller
 {
-    private $perPage = 20;
+    protected array $perPage = [20, 50, 100];
 
-    public function index(TranslationInjection $translation)
+    public function index(TranslationInjection $translation): JsonResponse
     {
-        $data = $translation->model->orderBy('id', 'desc')->paginate($this->perPage);
+        $data = $translation->model->orderBy('id', 'desc')->paginate($this->thisPerPage());
 
         return response()->json([
-            'data' => $data
+            'data' => $data,
+            'per_page_list' => $this->perPage,
         ]);
     }
 
-    public function delete(TranslationInjection $translation)
+    public function delete(TranslationInjection $translation): JsonResponse
     {
         $translation->model->delete();
 
@@ -29,7 +31,7 @@ class TranslationsController extends Controller
         ]);
     }
 
-    public function search(TranslationInjection $translation)
+    public function search(TranslationInjection $translation): JsonResponse
     {
         $querySearch = request()->get('query');
 
@@ -41,14 +43,14 @@ class TranslationsController extends Controller
             })
             ->groupBy('translations_phrases.id')
             ->orderBy('translations_phrases.id', 'desc')
-            ->paginate($this->perPage);
+            ->paginate($this->thisPerPage());
 
         return response()->json([
             'data' => $data
         ]);
     }
 
-    public function update($table, $id)
+    public function update(string $table, int $id): JsonResponse
     {
         $model = $table == 'translations-cms' ? TranslationsCms::find($id) : Translations::find($id);
 
@@ -57,5 +59,10 @@ class TranslationsController extends Controller
         return response()->json([
            'status' => 'success'
         ]);
+    }
+
+    private function thisPerPage(): int
+    {
+        return $this->perPage[0];
     }
 }

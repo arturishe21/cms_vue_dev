@@ -1,54 +1,66 @@
 <template>
-    <div>
-        <div class="load_page" v-if="isLoad" style="position: fixed; display: block; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
+  <div id="main" role="main">
+    <div id="main-content">
+      <div id="ribbon">
+        ribbon
+      </div>
+      <div id="content">
+            <div class="load_page" v-if="isLoad" style="position: fixed; display: block; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
 
-        <notifications/>
+            <notifications/>
 
-        <edit v-if="isShow"
-              :id="editId"
-              :urlLoadData="urlLoadData"
-              :urlSave = "urlForUpdate"
-              @showError = 'showError'
-              @closeWindow="closeWindow"
-              @loadData="loadData"
-        ></edit>
+            <edit v-if="isShow"
+                  :id="editId"
+                  :urlLoadData="urlLoadData"
+                  :urlSave = "urlForUpdate"
+                  @showError = 'showError'
+                  @closeWindow="closeWindow"
+                  @loadData="loadData"
+            ></edit>
 
-        <create v-if="isShowCreateWindow"
-              @closeWindow="isShowCreateWindow = false"
-              @loadData="loadData"
-              @showError = 'showError'
-              :url = $route.path
-              :urlCreate = "urlForCreate"
-        ></create>
+            <create v-if="isShowCreateWindow"
+                  @closeWindow="isShowCreateWindow = false"
+                  @loadData="loadData"
+                  @showError = 'showError'
+                  :url = $route.path
+                  :urlCreate = "urlForCreate"
+            ></create>
 
-        <component :is="component"
-               :info="data"
-               @edit="edit"
-               @add="add"
-               @deletePost="deletePost"
-               @sort="sort"
-               @clearOrder="clearOrder"
-               @loader="loader"
-               @search="search"
-               @showError = 'showError'
-               @setPage = 'setPage'
-        ></component>
+            <component :is="component"
+                   :info="data"
+                   @edit="edit"
+                   @clone="clonePost"
+                   @add="add"
+                   @deletePost="deletePost"
+                   @sort="sort"
+                   @clearOrder="clearOrder"
+                   @loader="loader"
+                   @search="search"
+                   @showError = 'showError'
+                   @setPage = 'setPage'
+            ></component>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 
     import list from './List';
     import list_tree from './ListTree';
+    import resource_custom from './ResourceCustom';
+
     import edit from './Edit';
     import create from './Create';
 
     export default {
+        name: 'RoutePages',
         components: {
             list,
             edit,
             create,
-            list_tree
+            list_tree,
+            resource_custom
         },
 
         data() {
@@ -83,25 +95,26 @@
         },
 
         computed: {
-            isShowMessage() {
-                return this.$store.getters.showMessage;
-            },
-
             urlLoadData() {
-                return `${this.$route.path}/edit/` + this.editId
+                return `${this.urlAction}/edit/` + this.editId
             },
 
             urlForUpdate() {
-                return `${this.$route.path}/save/` + this.editId
+                return `${this.urlAction}/save/` + this.editId
             },
 
             urlForCreate() {
-                return `${this.$route.path}/save`
+                return `${this.urlAction}/save`
             },
 
             component()
             {
                 return this.data.component;
+            }
+            ,
+            urlAction()
+            {
+                return this.$urlCms + this.$route.path;
             }
         },
 
@@ -117,7 +130,7 @@
                 let direction = this.order[field.key] == 'asc' ? 'desc' : 'asc';
 
                 this.axios
-                    .post(`${this.$route.path}/set-order`,
+                    .post(`${this.urlAction}/set-order`,
                         {
                             'field' : field.key,
                             'direction' : direction
@@ -132,9 +145,9 @@
                 this.loader(true);
 
                 this.axios
-                    .post(`${this.$route.path}/filter`, filter)
+                    .post(`${this.urlAction}/filter`, filter)
                     .then(response => {
-                        this.loadData()
+                        this.loadData(1)
                     }).catch(error => {
                         this.showError(error);
                     });
@@ -144,7 +157,7 @@
                 this.loader(true);
 
                 this.axios
-                    .post(`${this.$route.path}/clear-order`)
+                    .post(`${this.urlAction}/clear-order`)
                     .then(response => {
                         this.loadData()
                     }).catch(error => {
@@ -168,7 +181,7 @@
               this.page = page;
             },
 
-            loadData() {
+            loadData(page) {
                 this.loader(true);
                 this.editId = null;
 
@@ -181,8 +194,12 @@
                   getParams = '?page=' + this.page;
                 }
 
+                if (page != undefined) {
+                  getParams = '?page=' + page;
+                }
+
                 this.axios
-                    .get(`${this.$route.path}/list${getParams}` )
+                    .get(`${this.urlAction}/list${getParams}` )
                     .then(response => {
 
                         this.data = response.data;
@@ -232,13 +249,24 @@
 
             deletePost(id) {
                 this.axios
-                    .delete(`${this.$route.path}/delete/${id}`)
+                    .delete(`${this.urlAction}/delete/${id}`)
                     .then(response => {
                         this.loadData();
                         this.$notify({text: response.data.message, type: response.data.status});
                     }).catch(error => {
                         this.showError(error);
                    });
+            },
+
+            clonePost(id) {
+              this.axios
+                  .post(`${this.urlAction}/clone/${id}`)
+                  .then(response => {
+                    this.loadData();
+                    this.$notify({text: response.data.message, type: response.data.status});
+                  }).catch(error => {
+                this.showError(error);
+              });
             },
 
             loader(status) {

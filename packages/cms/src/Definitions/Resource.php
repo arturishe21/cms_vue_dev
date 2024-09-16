@@ -2,7 +2,6 @@
 
 namespace Arturishe21\Cms\Definitions;
 
-use App\Interfaces\ResourceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -10,19 +9,19 @@ use Arturishe21\Cms\Fields\Field;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Arturishe21\Cms\Services\Actions;
-use Arturishe21\Cms\Definitions\Traits\{CacheResource, CloneResource};
+use Arturishe21\Cms\Definitions\Traits\CacheResource;
 use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use Arturishe21\Cms\Services\FilterResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-abstract class Resource implements ResourceInterface
+abstract class Resource
 {
-    use CacheResource, CloneResource;
+    use CacheResource;
 
     public string $title;
-    public string $model;
+    public string $model = '';
     public Model $resolvedModel;
     protected string $orderBy = 'created_at desc';
     protected bool $isSortable = false;
@@ -30,7 +29,6 @@ abstract class Resource implements ResourceInterface
     protected string $cacheTag = '';
     protected array $relations = [];
     public $filterScope;
-    protected bool $isShowPerPage = false;
     public string $component = 'list';
     private $relativeModel;
 
@@ -83,11 +81,6 @@ abstract class Resource implements ResourceInterface
     public function getIsSortable(): bool
     {
         return $this->isSortable;
-    }
-
-    public function getIsShowPerPage()
-    {
-        return $this->isShowPerPage;
     }
 
     public function getOrderBy(): string
@@ -212,6 +205,15 @@ abstract class Resource implements ResourceInterface
         return $this->returnSuccess('Сохренено');
     }
 
+    public function fastEdit(Request $request): JsonResponse
+    {
+        $record = $this->resolvedModel;
+        $record->{$request->get('key')} = $request->get('value');
+        $record->save();
+
+        return $this->returnSuccess('Сохренено');
+    }
+
     protected function saveData(Model|HasMany $model, array $request): Model
     {
         $model = $this->saveDataInTable($model, $request);
@@ -296,6 +298,8 @@ abstract class Resource implements ResourceInterface
                     $result[$fieldModel->getNameField()] = $fieldModel->getValueForList($item);
                 }
 
+                $result['url_preview'] = $item->getUrlPreview();
+
                 return $result;
 
             })->toArray();
@@ -313,28 +317,6 @@ abstract class Resource implements ResourceInterface
         );
     }
 
-    /*public function getListingForExel()
-    {
-        $this->checkPermissions();
-
-        $head = $this->head();
-        $list = $this->getCollection($getAllRecords = true);
-
-        $definition = $this;
-
-        $list->map(function ($item, $key) use ($head, $definition) {
-            $item->fields = clone $head;
-            $item->fields->map(function ($item2, $key) use ($item, $definition) {
-                $item->fields[$key] = clone $item2;
-                $item2->setValue($item);
-
-                $item->fields[$key]->value = $item2->getValueForExel($definition);
-            });
-        });
-
-        return $list;
-    }*/
-
     public function changePosition(Request $request): JsonResponse
     {
         $pageThisCount = $request->get('number_page', 1);
@@ -351,6 +333,13 @@ abstract class Resource implements ResourceInterface
         }
 
         return $this->returnSuccess('Порядок следования изменен');
+    }
+
+    public function clone(): JsonResponse
+    {
+        $this->resolvedModel->duplicate();
+
+        return $this->returnSuccess('Запись склонирована');
     }
 
     protected function checkPermissions()
@@ -388,7 +377,7 @@ abstract class Resource implements ResourceInterface
         return collect($fields)->reject->isOnlyForm();
     }
 
-    public function getThisNode()
+    public function getThisNode(): array
     {
         return [];
     }

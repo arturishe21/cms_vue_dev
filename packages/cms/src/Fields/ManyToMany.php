@@ -10,18 +10,18 @@ use phpDocumentor\Reflection\Types\Collection;
 class ManyToMany extends Field
 {
     protected bool $isFieldForUpdateCreate = false;
-    protected $onlyForm = true;
-    protected $isManyToMany = true;
+    protected bool $onlyForm = true;
+    protected bool $isManyToMany = true;
     protected $options;
 
-    public function options($model)
+    public function options($model): self
     {
         $this->options = $model;
 
         return $this;
     }
 
-    public function getNameFieldInBd()
+    public function getNameField(): string
     {
         return $this->options->getRelation();
     }
@@ -79,16 +79,11 @@ class ManyToMany extends Field
 
     public function saveManyToMany(Model $model, array $request)
     {
-        $relation = $this->options->getRelation();
+        $relation = $this->getNameField();
         $listForSaving = $request[$relation] ?? [];
         $listForSavingIds = array_column($listForSaving, 'id');
 
         $model->{$relation}()->sync($listForSavingIds);
-    }
-
-    public function getNameField() : string
-    {
-        return str_replace('-', '', Str::slug(parent::getNameField()));
     }
 
     public function getValue()
@@ -96,7 +91,7 @@ class ManyToMany extends Field
         return $this->getOptionsSelected($this->definition);
     }
 
-    protected function meta()
+    protected function meta(): array
     {
         return [
             'options' => $this->getOptions($this->definition),

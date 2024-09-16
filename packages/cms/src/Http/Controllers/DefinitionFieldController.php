@@ -3,8 +3,7 @@
 namespace Arturishe21\Cms\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\DefinitionFieldInjection;
-use App\Services\PageInjection;
+use Arturishe21\Cms\Services\DefinitionFieldInjection;
 
 class DefinitionFieldController extends Controller
 {
@@ -19,7 +18,6 @@ class DefinitionFieldController extends Controller
             'isSortable' => $modelDefinition->relativeDefinition->getIsSortable(),
             'order' => $modelDefinition->relativeDefinition->getOrderByJson(),
             'component' => $modelDefinition->relativeDefinition->component,
-            'node' => $modelDefinition->relativeDefinition->getThisNode()
         ]);
     }
 

@@ -1,5 +1,10 @@
 <template>
-   <div>
+  <div id="main" role="main">
+    <div id="main-content">
+      <div id="ribbon">
+        ribbon
+      </div>
+       <div id="content">
        <div class="load_page" v-if="isLoad" style="position: fixed; display: block; opacity: 0.7; z-index: 1111111; height: 50px; top: 10px; right: 30px"><i class="fa fa-spinner fa-spin" style="font-size: 40px"></i></div>
 
        <div class="jarviswidget jarviswidget-color-blue " id="wid-id-4">
@@ -26,63 +31,55 @@
 
                    <table class="table  table-hover table-bordered " id="sort_t">
                        <thead>
-                       <tr>
-                           <th style="width: 25%">Фраза</th>
-                           <th>Код</th>
-                           <th>Переводы</th>
-                           <th style="width: 50px">
-                               <a class="btn btn-sm btn-success" categor="0">
-                                   <i class="fa fa-plus"></i> Создать
-                               </a>
-                           </th>
-                       </tr>
+                         <tr>
+                             <th style="width: 25%">Фраза</th>
+                             <th>Код</th>
+                             <th>Переводы</th>
+                             <th style="width: 50px">
+                                 <a class="btn btn-sm btn-success" categor="0">
+                                     <i class="fa fa-plus"></i> Создать
+                                 </a>
+                             </th>
+                         </tr>
                        </thead>
                        <tbody>
-                           <template v-if="listItems.total">
-                               <tr v-for="item in listItems.data"  :key="item.id">
-                                   <td style="text-align: left;">
-                                       {{item.phrase}}
-                                   </td>
-                                   <td>__t('{{item.phrase}}')</td>
+                           <tr v-for="item in listItems.data"  :key="item.id">
+                               <td style="text-align: left;">
+                                   {{item.phrase}}
+                               </td>
+                               <td>__t('{{item.phrase}}')</td>
 
-                                   <td style="text-align: left">
-                                       <p v-for="translate in item.translations">
-                                           <img :class="'flag flag-' + translate.lang" style="margin-right: 5px">
-                                           <a contenteditable="true"
-                                              @blur="event => editText(event, translate.id)"
-                                              >
-                                               {{translate.translate}}
-                                           </a>
-                                       </p>
-                                   </td>
-                                   <td>
-                                       <div class="btn-group pull-right">
-                                           <b-dropdown right no-caret>
-                                               <template #button-content>
-                                                   <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-                                               </template>
-                                               <li><a style="color: red" @click="deleteItem(item.id)" ><i class="fa red fa-times"></i> Удалить</a></li>
-                                           </b-dropdown>
-                                       </div>
-                                   </td>
-
-                               </tr>
-                           </template>
-                           <template v-else>
-                               <tr>
-                                   <td colspan="5"  class="text-align-center">
-                                       Пусто
-                                   </td>
-                               </tr>
-                           </template>
+                               <td style="text-align: left">
+                                   <p v-for="translate in item.translations">
+                                       <img :class="'flag flag-' + translate.lang" style="margin-right: 5px">
+                                       <a contenteditable="true"
+                                          @blur="event => editText(event, translate.id)"
+                                          >
+                                           {{translate.translate}}
+                                       </a>
+                                   </p>
+                               </td>
+                               <td>
+                                   <div class="btn-group pull-right">
+                                       <b-dropdown right no-caret>
+                                           <template #button-content>
+                                               <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
+                                           </template>
+                                           <li><a style="color: red" @click="deleteItem(item.id)" ><i class="fa red fa-times"></i> Удалить</a></li>
+                                       </b-dropdown>
+                                   </div>
+                               </td>
+                           </tr>
                        </tbody>
                    </table>
-                   <paginate :listItems = 'listItems' @updatelist="updatelist"></paginate>
+                   <paginate :listItems = 'listItems' :per_page_list="per_page_list" @updatelist="updatelist"></paginate>
                </div>
 
            </div>
        </div>
    </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -101,7 +98,14 @@
                 showDropdownItem : 0,
                 query : '',
                 isLoad: false,
+                per_page_list: []
             }
+        },
+
+        computed: {
+          urlAction() {
+            return this.$urlCms + this.$route.path;
+          }
         },
 
         watch: {
@@ -121,9 +125,10 @@
                 this.isLoad = true;
 
                 this.axios
-                    .get(`${this.$route.path}/search?query=${this.query}`)
+                    .get(`${this.urlAction}/search?query=${this.query}`)
                     .then(response => {
                         this.listItems = response.data.data;
+                        this.per_page_list = response.data.per_page_list;
                         this.isLoad = false;
                     });
             },
@@ -137,16 +142,17 @@
                 this.isLoad = true;
 
                 this.axios
-                    .get(`${this.$route.path}/list`)
+                    .get(`${this.urlAction}/list`)
                     .then(response => {
                         this.listItems = response.data.data;
+                        this.per_page_list = response.data.per_page_list;
                         this.isLoad = false;
                     });
             },
 
             deleteItem(id) {
                 this.axios
-                    .delete(`${this.$route.path}/delete/${id}`)
+                    .delete(`${this.urlAction}/delete/${id}`)
                     .then(response => {
                         this.loadData();
                     });
@@ -160,11 +166,11 @@
             editText(event, id) {
 
                 this.axios
-                    .post(`${this.$route.path}/update/${id}`, {
+                    .post(`${this.urlAction}/update/${id}`, {
                         'translate' : event.target.innerText
                     })
                     .then(response => {
-                        this.listItems = response.data.data;
+                      this.$notify({text: 'Updated', type: response.data.status});
                     });
             }
         }

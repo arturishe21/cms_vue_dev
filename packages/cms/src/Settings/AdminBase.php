@@ -4,9 +4,10 @@ namespace Arturishe21\Cms\Settings;
 
 abstract class AdminBase
 {
+    public const PATH = 'cms';
     protected string $caption = 'Административная часть сайта';
-    protected string $logoUrl = '/packages/vis/builder/img/logo-w.png';
-    protected string $faviconUrl = '/packages/vis/builder/img/favicon/favicon.ico';
+    protected string $logoUrl = '/packages/cms/img/logo-w.png';
+    protected string $faviconUrl = '/packages/cms/img/favicon/favicon.ico';
     protected string $css;
     protected string $js;
 
@@ -28,6 +29,7 @@ abstract class AdminBase
     {
         return $this->logoUrl;
     }
+
 
     public function getFaviconUrl(): string
     {

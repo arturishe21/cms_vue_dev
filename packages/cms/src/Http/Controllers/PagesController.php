@@ -7,11 +7,20 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Arturishe21\Cms\Definitions\ResourceCustom;
 
 class PagesController extends Controller
 {
     public function index(PageInjection $modelDefinition): JsonResponse
     {
+        if (is_subclass_of($modelDefinition->definition, ResourceCustom::class)) {
+            return response()->json([
+                'title' => $modelDefinition->definition->getTitle(),
+                'component' => $modelDefinition->definition->component,
+                'html' =>  $modelDefinition->definition->getHtml()
+            ]);
+        }
+
         return response()->json([
             'data' => $modelDefinition->definition->getListing(),
             'title' => $modelDefinition->definition->getTitle(),
@@ -51,9 +60,19 @@ class PagesController extends Controller
         return $modelDefinition->definition->remove();
     }
 
+    public function clone(PageInjection $modelDefinition): JsonResponse
+    {
+        return $modelDefinition->definition->clone();
+    }
+
     public function changePosition(PageInjection $modelDefinition, Request $request): JsonResponse
     {
         return $modelDefinition->definition->changePosition($request);
+    }
+
+    public function fastEdit(PageInjection $modelDefinition, Request $request): JsonResponse
+    {
+        return $modelDefinition->definition->fastEdit($request);
     }
 
     public function setOrder(PageInjection $modelDefinition, Request $request): void

@@ -9,7 +9,7 @@ class Foreign extends Field
 {
     protected $options = [];
 
-    public function options($model)
+    public function options($model): self
     {
         $this->options = $model;
 
@@ -84,10 +84,6 @@ class Foreign extends Field
         return optional($recordThis)->name;
     }*/
 
-    public function getValueForExel()
-    {
-        return $this->getValueForList();
-    }
 
     protected function getCacheArray($definition, $modelRelated)
     {
@@ -97,7 +93,7 @@ class Foreign extends Field
         return $cacheArray;
     }
 
-    protected function meta()
+    protected function meta(): array
     {
         return [
             'options' => $this->getOptions($this->definition),

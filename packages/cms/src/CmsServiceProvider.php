@@ -2,10 +2,12 @@
 
 namespace Arturishe21\Cms;
 
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Arturishe21\Cms\Console\{InstallCommand, GeneratePassword, CreateConfig, CreateImgWebp};
 use Arturishe21\Cms\Http\Middleware\{Authenticate, AuthenticateFrontend, LocalizationMiddlewareRedirect};
+use Arturishe21\Cms\Services\{PageInjection,TranslationInjection, DefinitionFieldInjection};
 use Illuminate\Contracts\Http\Kernel;
 
 class CmsServiceProvider extends ServiceProvider
@@ -30,19 +32,16 @@ class CmsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__. '/resources/views'), 'admin');
 
         $this->publishes([
-            __DIR__
-            .'/published' => public_path('packages/cms'),
-//            __DIR__.'/config'    => config_path('builder/'),
+            __DIR__ . '/published' => public_path('packages/cms'),
         ], 'public');
-
-     /*   $this->publishes([
-            __DIR__
-            .'/published/assets' => public_path('packages/vis/builder'),
-        ], 'public');*/
 
         $this->publishes([
             realpath(__DIR__ . '/Migrations') => $this->app->databasePath() . '/migrations',
         ]);
+
+        \App::singleton('user', function () {
+            return Sentinel::check();
+        });
 
     }
 
@@ -58,6 +57,31 @@ class CmsServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->app->bind('Arturishe21\Cms\Services\PageInjection', function($params)
+        {
+            $table = $this->app->make('router')->input('table');
+            $id = $this->app->make('router')->input('id');
+
+            return new PageInjection($table, $id);
+        });
+
+        $this->app->bind('Arturishe21\Cms\Services\DefinitionFieldInjection', function($params)
+        {
+            $table = $this->app->make('router')->input('table');
+            $id = $this->app->make('router')->input('id');
+            $relative = $this->app->make('router')->input('relative');
+
+            return new DefinitionFieldInjection($table, $id, $relative);
+        });
+
+        $this->app->bind('Arturishe21\Cms\Services\TranslationInjection', function($params)
+        {
+            $table = $this->app->make('router')->input('translations');
+            $id = $this->app->make('router')->input('id');
+
+            return new TranslationInjection($table, $id);
+        });
+
         $this->app[Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
 
         if (method_exists(Router::class, 'aliasMiddleware')) {

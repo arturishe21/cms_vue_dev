@@ -1,20 +1,26 @@
 import RoutePages from './components/RoutePages.vue';
 import Translations from './components/Translations.vue';
+import Login from './components/Login.vue';
 
 export const routes = [
     {
         name: 'translations',
-        path: '/cms/translations',
+        path: '/translations',
         component: Translations
     },
     {
         name: 'translations-cms',
-        path: '/cms/translations-cms',
+        path: '/translations-cms',
         component: Translations
     },
     {
+        name: 'login',
+        path: '/login',
+        component: Login
+    },
+    {
         name: 'list',
-        path: '/cms/*',
+        path: '/*',
         component: RoutePages
     },
 ];

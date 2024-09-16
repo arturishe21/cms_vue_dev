@@ -2,17 +2,16 @@
 
 namespace Arturishe21\Cms\Fields;
 
-use App\Services\ImageUpload;
+use Arturishe21\Cms\Services\ImageUpload;
 use Illuminate\Database\Eloquent\Model;
 
 class Image extends Field
 {
-    protected $isAutoTranslate = false;
     private string $path;
 
     public function getValue()
     {
-        $image = $this->value;
+        $image = parent::getValue();
 
         if ($image) {
             return [
@@ -29,7 +28,7 @@ class Image extends Field
         return $this;
     }
 
-    public function getValueForList(Model $model): ?string
+    public function getValueForList(Model $model): mixed
     {
         $value = parent::getValueForList($model);
 
@@ -46,5 +45,4 @@ class Image extends Field
     {
         return (new ImageUpload($this))->handle();
     }
-
 }

@@ -22,7 +22,7 @@ class Node extends Tree
                 Select::make('Шаблон', 'template')->options($this->getTemplates()),
                 Text::make('slug', 'slug'),
                 Checkbox::make('Активный', 'is_active'),
-                File::make('Картинка', 'picture_en')
+                File::make('Картинка', 'picture')
             ],
         ];
     }

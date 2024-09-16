@@ -139,6 +139,10 @@
 
             urlSave() {
                 return `${this.data.urlLoadDefinition}/save/` + this.editId;
+            },
+
+            urlAction() {
+              return this.$urlCms + this.$route.path;
             }
         },
 
@@ -172,7 +176,7 @@
                 page = page || 1;
 
                 this.axios
-                    .get(`${this.$route.path}/list/${this.id}/${this.data.key}?page=` + page)
+                    .get(`${this.urlAction}/list/${this.id}/${this.data.key}?page=` + page)
                     .then(response => {
                         this.list = response.data;
                     })

@@ -47,17 +47,10 @@ class Tree extends TreeBuilder
         return $query->orderBy('lft', 'asc');
     }
 
-    // end scopeMain
-
-    public function getDate()
-    {
-        return Util::getDate($this->created_at);
-    }
-
     // end getDate
 
     //url page
-    public function getUrl()
+    public function getUrl(): string
     {
         return geturl(parent::getUrl(), App::getLocale());
     }

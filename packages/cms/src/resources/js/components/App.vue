@@ -1,17 +1,9 @@
 <template>
     <div>
-        <headerPage></headerPage>
-        <navigation></navigation>
-        <div id="main" role="main">
-            <div id="main-content">
-                <div id="ribbon">
-                    ribbon
-                </div>
-                    <div id="content">
-                        <router-view></router-view>
-                    </div>
-            </div>
-        </div>
+        <headerPage v-if="currentRouteName != 'login'"></headerPage>
+        <navigation v-if="currentRouteName != 'login'"></navigation>
+
+         <router-view></router-view>
     </div>
 </template>
 
@@ -24,5 +16,14 @@
             headerPage,
             navigation
         },
+
+      computed: {
+        currentRouteName() {
+          return this.$route.name;
+        }
+      },
+      mounted() {
+        this.$store.dispatch('init');
+      },
     }
 </script>

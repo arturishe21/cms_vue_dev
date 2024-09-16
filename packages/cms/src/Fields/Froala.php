@@ -8,8 +8,8 @@ use phpDocumentor\Reflection\Types\Parent_;
 
 class Froala extends Field
 {
-    private $toolbar = "fullscreen, bold, italic, underline, strikeThrough, subscript, superscript, fontFamily, fontSize,  color, emoticons, inlineStyle, paragraphStyle,  paragraphFormat, align, formatOL, formatUL, outdent, indent, quote, insertHR, insertLink, insertImage, insertVideo, insertFile, insertTable, undo, redo, clearFormatting, selectAll, html";
-    private $options = '';
+    private string $toolbar = "fullscreen, bold, italic, underline, strikeThrough, subscript, superscript, fontFamily, fontSize,  color, emoticons, inlineStyle, paragraphStyle,  paragraphFormat, align, formatOL, formatUL, outdent, indent, quote, insertHR, insertLink, insertImage, insertVideo, insertFile, insertTable, undo, redo, clearFormatting, selectAll, html";
+    private string $options = '';
 
     public function toolbar($value)
     {
@@ -38,9 +38,6 @@ class Froala extends Field
     public function getValueForList(Model $model): ?string
     {
         $value = parent::getValueForList($model);
-        /*$value = json_decode(parent::getValueForList($model));
-
-        $value = $value->{$this->locale} ?? $this->getValue();*/
 
         return  Str::limit(strip_tags($value), 70);
     }

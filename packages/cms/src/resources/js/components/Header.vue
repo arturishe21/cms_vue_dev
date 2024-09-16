@@ -3,9 +3,9 @@
         <!-- HEADER -->
         <header id="header">
             <div id="logo-group">
-            <span id="logo" style="margin-top: 10px;">
-               <img src="/packages/vis/builder/img/logo-w.png">
-            </span>
+                <span id="logo" style="margin-top: 10px;">
+                   <img :src="settings.logo" height="30px">
+                </span>
             </div>
             <!-- pulled right: nav area -->
             <div class="pull-right">
@@ -13,22 +13,33 @@
                     <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fal fa-bars"></i></a> </span>
                 </div>
                 <div id="logout" class="btn-header transparent pull-right">
-                    <span> <a href="/admin/logout" data-action="userLogout" ><i class="fal fa-sign-out"></i></a> </span>
+                    <span> <a href="/cms/logout" data-action="userLogout" ><i class="fal fa-sign-out"></i></a> </span>
                 </div>
-                <ul class="header-dropdown-list hidden-xs">
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span> Русский </span> <i class="fa fa-angle-down"></i> </a>
-                        <ul class="dropdown-menu pull-right">
-
-                        </ul>
-                    </li>
-                </ul>
+<!--                <div class="header-dropdown-list hidden-xs" style="margin-top:10px">
+                      <b-dropdown right no-caret>
+                        <template #button-content>
+                          <span> Русский </span>
+                          <i class="fa fa-angle-down"></i>
+                        </template>
+                        <li v-if="settings.languages['cms'] != undefined" v-for="(languageTitle, key) in settings.languages['cms'].all">
+                          <a :href="key" v-text="languageTitle"></a>
+                        </li>
+                      </b-dropdown>
+                </div>-->
             </div>
         </header>
     </div>
 </template>
 <script>
+    import Vuex from "vuex";
+    import draggable from 'vuedraggable'
+
     export default {
+
+      computed: Vuex.mapGetters(['settings']),
+
+      components: {
+        draggable
+      },
     }
 </script>

@@ -2,10 +2,7 @@
     <div id="content">
         <div class="row" id="content_admin">
             <div id="table-preloader" class="smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
-            <p><a class="show_hide_tree">Показать дерево</a></p>
-            <div id="tree_top">
-                <div class="tree_top_content"></div>
-            </div>
+
             <section id="widget-grid" class="">
 
                 <div class="row" style="padding-right: 13px; padding-left: 13px;">
@@ -96,21 +93,42 @@
                                                                 <template v-if="field.key == 'title'">
                                                                   <p style="text-align: left">
                                                                     <i :class="[item[field.key].folder ? 'fa fa-folder' : 'fal fa-file']"></i>&nbsp;
-                                                                    <a @click="getNodeContent(item.id)" class="node_link">{{ item[field.key].title }}</a>
+                                                                    <a @click="getNodeContent(item.id)" class="node_link">
+                                                                      {{ item[field.key].title }}
+                                                                    </a>
                                                                   </p>
                                                                 </template>
                                                                 <template v-else>
-                                                                    <span v-html="item[field.key].title"></span>
+                                                                  <component
+                                                                      v-if="field.is_fast_edit && field.fast_edit_component"
+                                                                      :is="field.fast_edit_component"
+                                                                      :field="field"
+                                                                      :itemId="item.id"
+                                                                      :value="item[field.key].title"
+                                                                  ></component>
+                                                                  <span v-else v-html="item[field.key].title"></span>
+
                                                                 </template>
                                                             </td>
                                                             <td style="width: 80px">
+
                                                                 <div class="btn-group pull-right">
                                                                     <b-dropdown right no-caret>
                                                                         <template #button-content>
                                                                             <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
                                                                         </template>
-                                                                        <li><a @click="edit(item)"><i class="fa fa-pencil"></i> Редактироварь</a></li>
-                                                                        <li><a style="color: red" @click="remove(item)"><i class="fa red fa-times"></i> Удалить</a></li>
+                                                                        <li  v-if="checkActionAccess('update')">
+                                                                          <a @click="edit(item)"><i class="fa fa-pencil"></i> Редактироварь</a>
+                                                                        </li>
+                                                                        <li v-if="checkActionAccess('preview')">
+                                                                          <a :href="item.url_preview" target="_blank"><i class="fa fa-eye"></i> Предпросмотр</a>
+                                                                        </li>
+                                                                        <li v-if="checkActionAccess('clone')">
+                                                                          <a @click="$emit('clone', item.id)"><i class="fa fa-copy"></i> Клонировать</a>
+                                                                        </li>
+                                                                        <li  v-if="checkActionAccess('delete')">
+                                                                          <a style="color: red" @click="remove(item)"><i class="fa red fa-times"></i> Удалить</a>
+                                                                        </li>
                                                                     </b-dropdown>
                                                                 </div>
                                                             </td>
@@ -133,6 +151,7 @@
 <script>
 
     import draggable from 'vuedraggable'
+    import parseJson from "parse-json";
 
     export default {
         name: 'list_tree',
@@ -151,6 +170,12 @@
                 isShowFilter: false,
                 elementDraggable : {},
             }
+        },
+
+        computed: {
+          urlAction() {
+            return this.$urlCms + this.$route.path;
+          }
         },
 
         mounted() {
@@ -174,8 +199,13 @@
         },
 
         methods: {
+          parseJson,
 
-            checkIsFilterableResource()
+          checkActionAccess(name) {
+            return this.info.actions[name] !== undefined;
+          },
+
+          checkIsFilterableResource()
             {
               for (var prop in this.data.fields) {
                 if (this.data.fields[prop].is_filterable) {
@@ -235,7 +265,7 @@
                 });
 
                 this.axios
-                    .post(`${this.$route.path}/change-position`, {
+                    .post(`${this.urlAction}/change-position`, {
                         'ids' : priorityIds,
                         'element' : this.elementDraggable
                     })
@@ -264,7 +294,7 @@
                 this.$emit('loader', true);
 
                 this.axios
-                    .get(`${this.$route.path}/list?node=` +id )
+                    .get(`${this.urlAction}/list?node=` +id )
                     .then(response => {
                         this.data = response.data;
                         this.listItems = this.data.data;

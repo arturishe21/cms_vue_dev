@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en-us">
 <head>
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
-    <meta name="author" content="VIS-A-VIS">
+    <meta name="author" content="arturishe21">
     <meta name="HandheldFriendly" content="True">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="/packages/vis/builder/fontawesome-pro-5.12.0-web/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/packages/vis/builder/css/all.css">
-    <!--        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">-->
-    <link rel="shortcut icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
+    <meta name="path" content="{{\App\Cms\Admin::PATH}}">
+    <link rel="stylesheet" href="/packages/cms/fontawesome-pro-5.12.0-web/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/packages/cms/css/all2.css">
+    <link rel="shortcut icon" href="/packages/cms/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/packages/cms/img/favicon/favicon.ico" type="image/x-icon">
 
     <style>
         .smart-style-4 .tb-pagination nav>ul>li>a {
@@ -89,11 +89,10 @@
 
     </style>
 </head>
-<body class=" smart-style-4">
-<div id="app">
-    <app></app>
-</div>
-
+<body class="smart-style-4">
+    <template id="app">
+        <app></app>
+    </template>
 <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
 </body>
 </html>

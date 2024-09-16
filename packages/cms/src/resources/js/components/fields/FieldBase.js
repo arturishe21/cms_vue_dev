@@ -8,9 +8,17 @@ export default {
         }
     },
 
+    computed: {
+        urlAction() {
+            return this.$urlCms + this.$route.path;
+        }
+    },
+
     mounted() {
         this.updateData(this.data.key, this.data.value);
-        this.language = this.$store.getters.languages.site.default;
+
+       // console.log(this.$store.getters.settings.languages.cms.default);
+        this.language = this.$store.getters.settings.languages.cms.default;
     },
 
     watch: {

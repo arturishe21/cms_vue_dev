@@ -79,8 +79,6 @@
 
             saveData() {
 
-                this.$store.commit('message', true);
-
                 this.axios.post(this.urlSave, this.data)
                     .then(response => {
                        this.$emit("loadData");

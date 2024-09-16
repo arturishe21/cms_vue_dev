@@ -7,20 +7,18 @@ use Arturishe21\Cms\Models\Tree as TreeBuilder;
 class MenuHeader extends TreeBuilder
 {
     protected $table = 'menu_header';
-    protected $fillable = [];
     public $timestamps = false;
-    protected $guarded = [];
 
     public function tree()
     {
         return $this->belongsTo(Tree::class, 'tb_tree_id');
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
-        if ($this->tree) {
+        /*if ($this->tree) {
             return $this->tree->getUrl();
-        }
+        }*/
 
         if ($this->url) {
             return geturl($this->url);
@@ -30,7 +28,7 @@ class MenuHeader extends TreeBuilder
             return $this->t('url_external');
         }
 
-        return null;
+        return $this->id;
     }
 
     public static function getMenu()

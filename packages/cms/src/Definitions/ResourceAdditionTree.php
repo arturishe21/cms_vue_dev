@@ -60,7 +60,7 @@ class ResourceAdditionTree extends Resource
         return $collection->defaultOrder()->paginate($this->getPerPageThis());
     }
 
-    public function getThisNode()
+    public function getThisNode(): array
     {
         $page = $this->model()->find(request('node', 1));
 
@@ -88,7 +88,7 @@ class ResourceAdditionTree extends Resource
         return $this->returnSuccess('Порядок следования изменен');
     }
 
-    public function saveAddForm($request, $relativeModel = null): JsonResponse
+    public function saveAddForm(array $request, $relativeModel = null): JsonResponse
     {
         $record = $this->model();
         $result = parent::saveData($record, $request);
@@ -105,8 +105,39 @@ class ResourceAdditionTree extends Resource
         return $this->returnSuccess('Сохренено');
     }
 
-    public function clone(int $id): JsonResponse
+    public function clone(): JsonResponse
     {
-        return $this->cloneTree($id);
+        $this->cloneRecursively($id);
+
+        $this->clearCache();
+
+        return $this->returnSuccess('Запись склонирована');
+    }
+
+    private function cloneRecursively(int $id, ?int $parentId = null): void
+    {
+        $model = $this->model();
+
+        $pageOld = $model->find($id);
+
+        $parentId = $parentId ?: $pageOld->parent_id;
+
+        $root = $model::find($parentId);
+
+        $page = $model->find($id)->duplicate();
+        $page->makeChildOf($root);
+
+        $countPages = $model::where('parent_id', $page->parent_id)->where('slug', $page->slug)->count();
+
+        if ($countPages) {
+            $page->slug = $page->slug. '_' .time();
+            $page->save();
+        }
+
+        $folderCheck = $model::where('parent_id', $pageOld->id)->orderBy('lft', 'desc')->get();
+
+        foreach ($folderCheck as $pageChild) {
+            $this->cloneRecursively($pageChild->id, $page->id);
+        }
     }
 }

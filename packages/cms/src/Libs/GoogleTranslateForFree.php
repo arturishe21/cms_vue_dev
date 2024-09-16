@@ -30,7 +30,7 @@ class GoogleTranslateForFree
      *
      * @return string|array With the translation of the text in the target language
      */
-    public static function translate($source, $target, $text, $attempts = 5)
+    public static function translate($source, $target, $text, int $attempts = 5)
     {
         $target = $target == 'ua' ? 'uk' : $target;
         $source = $source == 'ua' ? 'uk' : $source;

@@ -6,9 +6,18 @@ use Arturishe21\Cms\Settings\AdminBase;
 
 class Admin extends AdminBase
 {
+    public const PATH = 'cms';
+  //  protected string $logoUrl = '/logo-w.svg';
+
     public function menu(): array
     {
         return [
+            [
+                'title' => 'Рабочий стол',
+                'icon'  => 'chart-line',
+                'link'  => '/dashboard',
+            ],
+
 
             [
                 'title' => 'Структура сайта',
@@ -19,12 +28,6 @@ class Admin extends AdminBase
             array(
                 'title' => "Меню Хедер",
                 'link'  => '/menu_header',
-            ),
-
-            array(
-                'title' => 'Слова',
-                'icon'  => 'music',
-                'link'  => '/words',
             ),
 
             array(
@@ -108,18 +111,6 @@ class Admin extends AdminBase
                     [
                         'title' => 'Пользователи',
                         'link'  => '/users',
-                        'submenu' => [
-                            [
-                                'title' => 'Пользователи2',
-                                'link'  => '/users',
-                            ],
-
-                            [
-                                'title' => 'Группы2',
-                                'link'  => '/groups',
-                            ],
-
-                        ],
                     ],
 
                     [

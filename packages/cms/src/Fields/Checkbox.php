@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Checkbox extends Field
 {
-    protected string $filterType = 'FilterSelect';
+    protected string $filterComponent = 'FilterSelect';
+    protected string $fastEditComponent = 'fast_checkbox';
 
     public function getValueForList(Model $model): ?string
     {
-        if (parent::getValueForList($model) === '1') {
+        if ($this->isFastEdit) {
+            return (bool) parent::getValueForList($model);
+        }
+
+        if (parent::getValueForList($model)) {
             return '<span class="glyphicon glyphicon-ok"></span>';
         }
 
         return '<span class="glyphicon glyphicon-minus"></span>';
-    }
-
-    public function getValueForExel(): string
-    {
-        return $this->value;
     }
 
     public function getOptions(): array
@@ -32,11 +32,13 @@ class Checkbox extends Field
 
     public function getValue()
     {
-        if ($this->value === '' && $this->defaultValue) {
+        $value = parent::getValue();
+
+        if ($value === '' && $this->defaultValue) {
             return true;
         }
 
-        if ($this->value) {
+        if ($value) {
             return true;
         }
 

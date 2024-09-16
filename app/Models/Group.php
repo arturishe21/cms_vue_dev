@@ -13,4 +13,9 @@ class Group extends EloquentRole
         return $this->$ident;
     }
 
+    public function getUrlPreview(): string
+    {
+        return '';
+    }
+
 }

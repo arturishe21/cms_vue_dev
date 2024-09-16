@@ -110,7 +110,7 @@
                     }
 
                     this.axios
-                        .post(`${this.$route.path}/file/upload`, data, config)
+                        .post(`${this.urlAction}/file/upload`, data, config)
                         .then(response => {
                             this.value.push(response.data.image);
                             this.progress = 0;

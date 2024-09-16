@@ -40,17 +40,17 @@ class Words extends Resource
           //  Froala::make('Описание', 'description')->filter()->language(),
             MultiFile::make('Файл mp3', 'sound'),
             File::make('Картинка', 'title_ru')->accept('ss'),
-            Image::make('Картинка', 'sound_en'),
+            Image::make('Картинка', 'sound_en')->fastEdit(),
 
             Select::make('Select', 'link')
                 ->options([
                     'test' => 'тест',
                     'test1' => 'test1'
                 ])
-                ->sortable()->filter(),
+                ->sortable()->filter()->fastEdit(),
 
             Checkbox::make('Активно', 'is_active')->filter(),
-            Date::make('created_at', 'created_at')->filter()->default(Carbon::now()),
+            Date::make('created_at', 'created_at')->filter()->default(Carbon::now())->fastEdit(),
 
             Definition::make('Дефинишен')
                 ->hasMany('definitionTest', WordsDefinition::class),

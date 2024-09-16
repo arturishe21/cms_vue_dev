@@ -6,7 +6,7 @@ use App\Cms\Admin;
 
 class Permissions extends Field
 {
-    private $actions = [
+    protected array $actions = [
         'view' => 'Просмотр',
         'insert' => 'Создание',
         'update' => 'Редактирование',
@@ -16,29 +16,13 @@ class Permissions extends Field
         'delete' => 'Удаление'
     ];
 
-    public function getFieldForm($definition)
-    {
-        $permissions = $this->generatePermissions();
-        $groupPermissionsThis = $this->getValue();
-
-        return view('admin::form.fields.permissions', compact('permissions', 'groupPermissionsThis'))->render();
-    }
-
-    public function prepareSave($request)
-    {
-        $nameField = $this->getNameField();
-
-        return array_map('boolval', $request[$nameField]);
-    }
-
-    private function generatePermissions()
+    private function generatePermissions(): array
     {
         $permissionsMenu = (new Admin())->menu();
 
         $permissions['Дооступ в cms'] = [
             "admin.access" => "Да"
         ];
-
 
         foreach ($permissionsMenu as $permission) {
             if (isset($permission['link']) && isset($permission['title'])) {
@@ -80,8 +64,17 @@ class Permissions extends Field
         return $permissions;
     }
 
-    private function prepareSlug($link)
+    private function prepareSlug($link): string
     {
         return str_replace(['/'], [''], $link);
     }
+
+
+    protected function meta(): array
+    {
+        return [
+            'permissions' => $this->generatePermissions()
+        ];
+    }
+
 }

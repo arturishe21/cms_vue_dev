@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Arturishe21\Cms\Models\BaseModel;
+
 class WordsDefinition extends BaseModel
 {
     protected $table = 'words_definition';

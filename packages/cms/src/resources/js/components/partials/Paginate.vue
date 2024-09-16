@@ -38,10 +38,17 @@
          components: {Select},
          props : ['listItems', 'per_page_list'],
 
+        computed: {
+          urlAction()
+          {
+            return this.$urlCms + this.$route.path;
+          }
+        },
+
          methods: {
             changePerPage()
             {
-               this.axios.post(`${this.$route.path}/set-per-page`, {
+               this.axios.post(`${this.urlAction}/set-per-page`, {
                  'per_page' : this.listItems.per_page
                }).then(response => {
                   this.fetchData(1);
@@ -57,7 +64,7 @@
 
                 window.history.pushState(url, '', url);
 
-                this.axios.get(`${this.$route.path}/list?page=` + page)
+                this.axios.get(`${this.urlAction}/list?page=` + page)
                     .then(response => {
                         this.$emit("updatelist", {
                           'list': response,

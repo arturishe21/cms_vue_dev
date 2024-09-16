@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Date extends Field
 {
-    protected string $filterType = 'FilterDate';
+    protected string $filterComponent = 'FilterDate';
+    protected string $fastEditComponent = 'fast_date';
 
     public function getValue()
     {
-        $date = $this->value;
+        $value = $this->model->{$this->key} ?: $this->defaultValue;
 
-        if ($date) {
-            return $this->value->format('Y-m-d');
+        if ($value) {
+            return $value->format('Y-m-d');
         }
     }
 

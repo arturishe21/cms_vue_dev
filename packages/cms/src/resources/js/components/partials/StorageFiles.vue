@@ -1,5 +1,5 @@
 <template>
-    <div class="modal files_uploaded_table" role="dialog" style="display: block" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal files_uploaded_table" role="dialog" style="display: block; " aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
             <div class="modal-content">
@@ -8,14 +8,14 @@
                     <h4 class="modal-title" id="modal_form_label">Выберите файлы</h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
+                    <table class="table table-bordered">
                         <thead>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th class="name">Имя</th>
-                            <th class="size">Размер</th>
-                            <th class="date">Дата</th>
-                        </tr>
+                          <tr>
+                              <th style="width:20px">&nbsp;</th>
+                              <th>Имя</th>
+                              <th>Размер</th>
+                              <th>Дата</th>
+                          </tr>
                         </thead>
                         <tbody>
                             <tr v-for="file in files.data">
@@ -25,9 +25,9 @@
                                         <i></i>
                                     </label>
                                 </td>
-                                <td style="text-align: left" class="name"><a href="" target="_blank">{{file.name}}</a></td>
-                                <td class="size">{{file.size}}</td>
-                                <td class="date">{{file.date}}</td>
+                                <td style="text-align: left"><a href="" target="_blank">{{file.name}}</a></td>
+                                <td>{{file.size}}</td>
+                                <td>{{file.date}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -89,7 +89,7 @@
                 page = page || 1;
 
                 this.axios
-                    .post(`/cms/load-storage-files?page=`  + page)
+                    .post(`${this.$urlCms}/load-storage-files?page=`  + page)
                     .then(response => {
                         this.files = response.data.files
                     })

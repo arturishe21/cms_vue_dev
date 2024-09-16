@@ -26,7 +26,8 @@
                                           {{field.title}}
                                       </th>
                                       <th class="e-insert_button-cell" style="min-width: 69px;">
-                                          <button class="btn btn-sm btn-success" style="min-width: 70px;" type="button" @click="$emit('add');">
+                                          <button v-if="checkActionAccess('insert')"
+                                              class="btn btn-sm btn-success" style="min-width: 70px;" type="button" @click="$emit('add');">
                                               Добавить
                                           </button>
                                       </th>
@@ -61,17 +62,33 @@
                                             <i class="fa fa-sort"></i>
                                         </td>
                                         <td v-for="field in data.fields" :key="field.key">
-                                            <span v-html="item[field.key]"></span>
+                                            <component
+                                                v-if="field.is_fast_edit && field.fast_edit_component"
+                                                :is="field.fast_edit_component"
+                                                :field="field"
+                                                :itemId="item.id"
+                                                :value="item[field.key]"
+                                            ></component>
+                                            <span v-else v-html="item[field.key]"></span>
                                         </td>
                                         <td style="width: 80px">
-                                          <actions :item="item" ></actions>
                                           <div class="btn-group pull-right">
                                             <b-dropdown right no-caret>
                                               <template #button-content>
                                                 <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
                                               </template>
-                                              <li><a @click="$emit('edit', item.id)"><i class="fa fa-pencil"></i> Редактироварь</a></li>
-                                              <li><a style="color: red" @click="$emit('deletePost', item.id)"><i class="fa red fa-times"></i> Удалить</a></li>
+                                              <li v-if="checkActionAccess('update')">
+                                                <a @click="$emit('edit', item.id)"><i class="fa fa-pencil"></i> Редактироварь</a>
+                                              </li>
+                                              <li v-if="checkActionAccess('preview')">
+                                                <a :href="item.url_preview" target="_blank"><i class="fa fa-eye"></i> Предпросмотр</a>
+                                              </li>
+                                              <li v-if="checkActionAccess('clone')">
+                                                <a @click="$emit('clone', item.id)"><i class="fa fa-copy"></i> Клонировать</a>
+                                              </li>
+                                              <li v-if="checkActionAccess('delete')">
+                                                <a style="color: red" @click="$emit('deletePost', item.id)"><i class="fa red fa-times"></i> Удалить</a>
+                                              </li>
                                             </b-dropdown>
                                           </div>
                                         </td>
@@ -108,6 +125,13 @@
             }
         },
 
+        computed: {
+            urlAction()
+            {
+              return this.$urlCms + this.$route.path;
+            }
+        },
+
         mounted() {
             this.data = this.info;
             this.listItems = this.info.data;
@@ -125,6 +149,10 @@
         },
 
         methods: {
+
+            checkActionAccess(name) {
+                return this.info.actions[name] !== undefined;
+            },
 
             clearFilter(key)
             {
@@ -151,9 +179,9 @@
                 this.listItems.data.forEach(function (element) {
                     priorityIds.push(element.id);
                 });
-                ;
+
                 this.axios
-                    .post(`${this.$route.path}/change-position`, {
+                    .post(`${this.urlAction}/change-position`, {
                       'ids' : priorityIds,
                       'number_page' : this.page,
                       'per_page' : this.listItems.per_page

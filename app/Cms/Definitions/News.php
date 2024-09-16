@@ -5,6 +5,7 @@ namespace App\Cms\Definitions;
 use Arturishe21\Cms\Services\Actions;
 use App\Models\Article;
 use Arturishe21\Cms\Fields\{Color,
+    Custom,
     Froala,
     Hidden,
     ManyToManyAjax,
@@ -38,18 +39,19 @@ class News extends Resource
         return [
             'main' => [
                 Id::make('#', 'id')->sortable(),
-                Text::make('Заголовок', 'title')->sortable()->filter(),
+                Text::make('Заголовок', 'title')->language()->sortable()->filter(),
 
                 ForeignAjax::make('Пользователь', 'user_id')
                     ->options(
                         (new Options('user'))->keyField('email'))
-                    ->filter()
+                    ->filter()->fastEdit()
                 ,
 
                 Datetime::make('created', 'created_at')->filter(),
 
-                Checkbox::make('Активно', 'is_active')->sortable()->filter(),
-                Froala::make('Заголовок2', 'picture')->filter()
+                Checkbox::make('Активно', 'is_active')->sortable()->filter()->fastEdit(),
+                Froala::make('text', 'text')->filter(),
+                Custom::make('Заголовок55')
             ],
 
             'SEO' => [

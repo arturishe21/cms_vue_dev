@@ -71,4 +71,9 @@ class UserBuilder extends EloquentUser
 
         return $this->hasAccessForCms($url, $action);
     }
+
+    public function getUrlPreview(): string
+    {
+        return '';
+    }
 }

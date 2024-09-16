@@ -34,7 +34,7 @@ class Users extends Resource
 
                 Text::make('Имя', 'first_name')->sortable()->filter(),
                 Checkbox::make('Активен', 'completed')->hasOne('activation')->filter(),
-                Text::make('completed_at', 'completed_at')->hasOne('activation'),
+              //  Text::make('completed_at', 'completed_at')->hasOne('activation'),
           //      Readonly::make('Дата регистрации', 'created_at')->default(Carbon::now())->sortable(),
            //     Readonly::make('Дата последнего входа', 'last_login')->sortable()
             ],

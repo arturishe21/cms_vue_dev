@@ -69,7 +69,7 @@ class CreateImgWebp extends Command
         }
     }
 
-    private function convert($file)
+    private function convert(string $file): void
     {
         $newFile = str_replace(['.png', '.jpg', '.jpeg'], '.webp', $file);
 

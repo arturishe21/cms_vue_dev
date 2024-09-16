@@ -5,7 +5,7 @@
                 <span>
                     <a>
                         <span>
-                            Вася
+
                         </span>
                     </a>
                 </span>
@@ -14,7 +14,7 @@
             <nav>
                 <ul style="display: block;">
 
-                    <li class="level1" v-for="(menuItem, key) in menu" :key="key" :class="{'active': subIsActive(menuItem.link)}">
+                    <li class="level1" v-for="(menuItem, key) in settings.menu" :key="key" :class="{'active': subIsActive(menuItem.link)}">
                         <template v-if="menuItem.submenu">
 
                                 <a @click="$event.target.parentElement.classList.toggle('active')">
@@ -51,11 +51,13 @@
 
     export default {
 
-        computed: Vuex.mapGetters(['menu']),
+        computed: Vuex.mapGetters(['settings']),
+/*
 
         mounted() {
             this.$store.dispatch('init');
         },
+*/
 
         methods: {
             subIsActive(input) {
@@ -63,7 +65,7 @@
             },
 
             url (urlPath) {
-                return '/cms' + urlPath;
+                return urlPath;
             }
         }
     }

@@ -7,31 +7,23 @@ use Illuminate\Support\Collection;
 
 class ForeignAjax extends Foreign
 {
-    protected string $filterType = 'FilterForeignAjax';
+    protected string $filterComponent = 'FilterForeignAjax';
+    protected string $fastEditComponent = 'fast_foreign_ajax';
 
     public function getValue()
     {
-        $relation = $this->model->{$this->options->getRelation()}()
-            ->select([ "id", "{$this->options->getKeyField()} as name"])
-            ->first();
-
-        return $relation ? : '';
+        return $this->getRelation($this->model);
     }
 
-    public function getValueForList(Model $model): string
+    public function getValueForList(Model $model): mixed
     {
-        $relation = $model->{$this->options->getRelation()}()
-            ->select([ "id", "{$this->options->getKeyField()} as name"])
-            ->first();
+        $value = $this->getRelation($model);
 
-        $value = $relation ? : '';
+        if ($this->isFastEdit) {
+            return $value;
+        }
 
         return $value['name'] ?? '';
-    }
-
-    public function getValueForExel()
-    {
-        return $this->getValueForList();
     }
 
     public function search(string $query): Collection
@@ -51,8 +43,12 @@ class ForeignAjax extends Foreign
         return $modelRelated->take(10)->get(['id', $keyField . ' as name']);
     }
 
-    protected function meta()
+    private function getRelation(?Model $model): mixed
     {
-        return [];
+        $relation = $model->{$this->options->getRelation()}()
+            ->select([ "id", "{$this->options->getKeyField()} as name"])
+            ->first();
+
+        return $relation ? : '';
     }
 }

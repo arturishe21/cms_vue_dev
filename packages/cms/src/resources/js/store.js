@@ -3,18 +3,18 @@ export default {
 
     state: {
         data: {},
-        languages : {},
-        menu : {},
         user : {},
+        settings: {},
+        path: document.querySelector('meta[name="path"]').content,
     },
 
     getters: {
         getData: (state) => (definition) => {
             return state.data[definition];
         },
-        menu: state => state.menu,
         user: state => state.user,
-        languages: state => state.languages,
+        path: state => state.path,
+        settings: state => state.settings
     },
 
     mutations: {
@@ -27,25 +27,18 @@ export default {
            state.data[definition][key] = value;
         },
 
-        setLanguage (state, languages) {
-            state.languages = languages;
-        },
-
-        setMenu (state, menu) {
-            state.menu = menu;
+        setSettings (state, settings) {
+            state.settings = settings;
         },
     },
 
     actions: {
         init({commit}) {
-
             axios
-                .get(`/cms/init`)
+                .get('/' + this.state.path + '/init')
                 .then(response => {
-                    commit('setLanguage', response.data.languages);
-                    commit('setMenu', response.data.menu)
+                    commit('setSettings', response.data)
                 });
-
         }
     }
 };

@@ -9,7 +9,8 @@ class Select extends Field
     private array $options = [];
     private bool $isAction = false;
     private bool $actionSelect = false;
-    protected string $filterType = 'FilterSelect';
+    protected string $filterComponent = 'FilterSelect';
+    protected string $fastEditComponent = 'fast_select';
 
     public function options($arrayList): self
     {
@@ -64,6 +65,11 @@ class Select extends Field
     public function getValueForList(Model $model): ?string
     {
         $value = parent::getValueForList($model);
+
+        if ($this->isFastEdit) {
+            return $value;
+        }
+
         $optionsArray = $this->getOptions();
 
         return $optionsArray[$value] ?? '';
