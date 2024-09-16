@@ -68,7 +68,7 @@
                 return this.$store.getters.getData(this.definition);
             },
             urlAction() {
-              return this.$urlCms + this.$route.path;
+              return this.$urlCms + this.url;
             }
         },
 

@@ -81,7 +81,7 @@
                 @closeWindow="isShowCreateWindow = false"
                 @loadData="loadDefinitionData"
                 :urlCreate=urlSaveCreate
-                :url=data.urlLoadDefinition
+                :url="'/' + data.urlLoadDefinition"
         ></create>
 
         <edit v-if="editId"
@@ -130,7 +130,7 @@
             },
 
             urlSaveCreate () {
-                return `${this.$route.path}/${this.id}/${this.data.key}/save`;
+                return `${this.$urlCms}${this.$route.path}/${this.id}/${this.data.key}/save`;
             },
 
             urlLoadData() {

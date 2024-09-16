@@ -2,30 +2,9 @@
 
 namespace App\Cms\Definitions;
 
-use Arturishe21\Cms\Services\Actions;
-use App\Models\Article;
-use Arturishe21\Cms\Fields\{Color,
-    Custom,
-    Froala,
-    Hidden,
-    ManyToManyAjax,
-    MultiFile,
-    MultiImage,
-    Relations\Options,
-    Select,
-    Password,
-    ForeignAjax,
-    Id,
-    Checkbox,
-    Datetime,
-    Image,
-    File,
-    Text,
-    Definition,
-    Number,
-    Textarea};
 use Arturishe21\Cms\Definitions\Resource;
-use Carbon\Carbon;
+use Arturishe21\Cms\Fields\{Checkbox, Custom, Datetime, Definition, ForeignAjax, Froala, Id, Relations\Options, Text};
+use Arturishe21\Cms\Services\Actions;
 
 class News extends Resource
 {
@@ -51,7 +30,9 @@ class News extends Resource
 
                 Checkbox::make('Активно', 'is_active')->sortable()->filter()->fastEdit(),
                 Froala::make('text', 'text')->filter(),
-                Custom::make('Заголовок55')
+                Custom::make('Заголовок55'),
+                Definition::make('test')->hasMany('params', NewsTestDeifition::class)
+
             ],
 
             'SEO' => [
