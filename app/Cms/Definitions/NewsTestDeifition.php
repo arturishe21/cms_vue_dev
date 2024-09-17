@@ -24,7 +24,6 @@ class NewsTestDeifition extends Resource
         ];
     }
 
-
     public function actions(): Actions
     {
         return Actions::make();

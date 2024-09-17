@@ -9,10 +9,9 @@ class File extends Field
 {
     protected string $accept;
     protected string $path = '/storage/files/';
-    protected $isAutoTranslate = false;
-    protected $selectWithUploaded = true;
+    protected bool $selectWithUploaded = true;
 
-    public function getAccept()
+    public function getAccept(): string
     {
         return $this->accept;
     }
@@ -42,7 +41,7 @@ class File extends Field
         return $this;
     }
 
-    public function checkSelectionFiles()
+    public function checkSelectionFiles(): bool
     {
         return $this->selectWithUploaded;
     }
