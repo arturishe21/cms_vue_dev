@@ -14,12 +14,12 @@ class Password extends Field
         return $this->defaultPassword;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
        return $this->defaultPassword;
     }
 
-    public function prepareSave($request)
+    public function prepareSave(array $request): mixed
     {
         $nameField = $this->getNameField();
 

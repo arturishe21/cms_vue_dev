@@ -4,6 +4,7 @@ namespace Arturishe21\Cms\Fields\Custom;
 
 use Arturishe21\Cms\Fields\Text;
 use Arturishe21\Cms\Setting;
+use Illuminate\Support\Facades\View;
 
 class TextSetting extends Text
 {
@@ -28,7 +29,7 @@ class TextSetting extends Text
         }
     }
 
-    public function getFieldForm($definition)
+    public function getFieldForm($definition): View
     {
         $field = $this;
 

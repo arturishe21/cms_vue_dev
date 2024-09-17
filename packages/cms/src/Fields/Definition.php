@@ -2,6 +2,7 @@
 
 namespace Arturishe21\Cms\Fields;
 
+use Arturishe21\Cms\Definitions\Resource;
 use Illuminate\Support\Str;
 
 class Definition extends Field
@@ -26,7 +27,7 @@ class Definition extends Field
         return $this;
     }
 
-    public function getDefinitionRelation()
+    public function getDefinitionRelation(): Resource
     {
         return app($this->definitionRelation);
     }

@@ -2,8 +2,7 @@
 
 namespace Arturishe21\Cms\Fields;
 
-use Illuminate\Support\Arr;
-use Arturishe21\Cms\Definitions\Resource;
+use Illuminate\Database\Eloquent\Collection;
 
 class Foreign extends Field
 {
@@ -16,7 +15,7 @@ class Foreign extends Field
         return $this;
     }
 
-    public function getOptions($definition)
+    public function getOptions($definition): array
     {
         $collection = $this->getDataWithWhereAndOrder($definition);
         $data = [];
@@ -48,7 +47,7 @@ class Foreign extends Field
         return null;
     }
 
-    public function getDataWithWhereAndOrder($definition)
+    public function getDataWithWhereAndOrder($definition): Collection
     {
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
 
@@ -72,20 +71,7 @@ class Foreign extends Field
         return $collection->get();
     }
 
-   /* public function getValueForList(): string
-    {
-        $value = $this->getValue();
-        $definition = $this->getDefinition($definition);
-        $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
-        $record = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
-
-        $recordThis = $record->find($value);
-
-        return optional($recordThis)->name;
-    }*/
-
-
-    protected function getCacheArray($definition, $modelRelated)
+    protected function getCacheArray($definition, $modelRelated): array
     {
         $cacheArray[] = $definition->getCacheKey();
         $cacheArray[] = $modelRelated->getTable();

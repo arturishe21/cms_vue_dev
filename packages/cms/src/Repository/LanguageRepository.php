@@ -32,11 +32,13 @@ class LanguageRepository extends BaseRepository
         );
     }
 
-    public function transformField(array $fieldArray): string
+    public function transformField(?array $fieldArray): string
     {
         $fieldWithLanguage = [];
-        foreach ($fieldArray as $language => $value) {
-            $fieldWithLanguage[$language] = $value ?: $this->createNewTranslate($language, $fieldArray[defaultLanguage()]);
+        if (is_array($fieldArray)) {
+            foreach ($fieldArray as $language => $value) {
+                $fieldWithLanguage[$language] = $value ?: $this->createNewTranslate($language, $fieldArray[defaultLanguage()]);
+            }
         }
 
         return json_encode($fieldWithLanguage);

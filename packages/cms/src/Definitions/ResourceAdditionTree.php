@@ -50,8 +50,9 @@ class ResourceAdditionTree extends Resource
         );
     }
 
-    public function getCollectionTree()
+    public function getCollectionTree(): LengthAwarePaginator
     {
+
         $current = $this->model()->findOrFail(request('node', 1));
         $children = $current->children();
         $collection = $children->withCount('children');
@@ -105,7 +106,7 @@ class ResourceAdditionTree extends Resource
         return $this->returnSuccess('Сохренено');
     }
 
-    public function clone(): JsonResponse
+    public function clone(int $id): JsonResponse
     {
         $this->cloneRecursively($id);
 
@@ -117,9 +118,7 @@ class ResourceAdditionTree extends Resource
     private function cloneRecursively(int $id, ?int $parentId = null): void
     {
         $model = $this->model();
-
         $pageOld = $model->find($id);
-
         $parentId = $parentId ?: $pageOld->parent_id;
 
         $root = $model::find($parentId);
@@ -127,9 +126,11 @@ class ResourceAdditionTree extends Resource
         $page = $model->find($id)->duplicate();
         $page->makeChildOf($root);
 
-        $countPages = $model::where('parent_id', $page->parent_id)->where('slug', $page->slug)->count();
+        $countPages = $model::where('parent_id', $page->parent_id)->when($page->slug, function ($q) use ($page) {
+            return $q->whereSlug($page->slug);
+        })->count();
 
-        if ($countPages) {
+        if ($countPages && $page->slug) {
             $page->slug = $page->slug. '_' .time();
             $page->save();
         }

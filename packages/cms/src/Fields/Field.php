@@ -126,7 +126,7 @@ class Field implements JsonSerializable
         return $this->definition;
     }
 
-    public function className($class)
+    public function className($class): self
     {
         if (is_null($this->classNameField)) {
             $this->classNameField = $class;
@@ -137,12 +137,12 @@ class Field implements JsonSerializable
         return $this;
     }
 
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->classNameField ? 'section_field '. $this->classNameField : '';
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $value = $this->model->{$this->key} ?: $this->defaultValue;
 
@@ -314,7 +314,7 @@ class Field implements JsonSerializable
         return $this->relationMorphOne;
     }
 
-    public function prepareSave($request)
+    public function prepareSave(array $request): mixed
     {
         $nameField = $this->getNameField();
 

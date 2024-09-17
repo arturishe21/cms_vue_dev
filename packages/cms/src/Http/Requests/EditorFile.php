@@ -8,13 +8,13 @@ class EditorFile extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return app('user')->hasAccess(['admin.access']);
     }
 
     public function rules(): array
     {
         return [
-            'file'  => 'required'
+            'file'  => ['required']
         ];
     }
 }

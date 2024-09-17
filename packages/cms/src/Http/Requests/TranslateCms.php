@@ -8,13 +8,13 @@ class TranslateCms extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return app('user')->hasAccess(['admin.access']);
     }
 
     public function rules(): array
     {
         return [
-            'phrase' => 'required|unique:translations_phrases_cms',
+            'phrase' => ['required', 'unique:translations_phrases_cms'],
         ];
     }
 }

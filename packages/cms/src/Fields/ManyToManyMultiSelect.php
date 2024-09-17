@@ -3,10 +3,11 @@
 namespace Arturishe21\Cms\Fields;
 
 use Arturishe21\Cms\Definitions\Resource;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManyToManyMultiSelect extends ManyToMany
 {
-    public function save($collectionArray, $model)
+    public function save($collectionArray, $model): void
     {
         $model->{$this->options->getRelation()}()->detach();
 
@@ -15,7 +16,7 @@ class ManyToManyMultiSelect extends ManyToMany
         }
     }
 
-    public function getOptionsSelected(Resource $definition)
+    public function getOptionsSelected(Resource $definition): Collection|array
     {
         if (request()->id) {
 

@@ -335,9 +335,9 @@ abstract class Resource
         return $this->returnSuccess('Порядок следования изменен');
     }
 
-    public function clone(): JsonResponse
+    public function clone(int $id): JsonResponse
     {
-        $this->resolvedModel->duplicate();
+        $this->resolvedModel->find($id)->replicate()->save();;
 
         return $this->returnSuccess('Запись склонирована');
     }
@@ -363,7 +363,7 @@ abstract class Resource
         return $collection->orderByRaw($this->getOrderBy())->paginate($this->getPerPageThis());
     }
 
-    public function filterScope($scope)
+    public function filterScope($scope): void
     {
         $this->filterScope = $scope;
     }

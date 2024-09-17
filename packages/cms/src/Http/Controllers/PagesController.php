@@ -60,9 +60,9 @@ class PagesController extends Controller
         return $modelDefinition->definition->remove();
     }
 
-    public function clone(PageInjection $modelDefinition): JsonResponse
+    public function clone(PageInjection $modelDefinition, string $table, int $id): JsonResponse
     {
-        return $modelDefinition->definition->clone();
+        return $modelDefinition->definition->clone($id);
     }
 
     public function changePosition(PageInjection $modelDefinition, Request $request): JsonResponse

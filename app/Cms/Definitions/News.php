@@ -3,7 +3,16 @@
 namespace App\Cms\Definitions;
 
 use Arturishe21\Cms\Definitions\Resource;
-use Arturishe21\Cms\Fields\{Checkbox, Custom, Datetime, Definition, ForeignAjax, Froala, Id, Relations\Options, Text};
+use Arturishe21\Cms\Fields\{Checkbox,
+    Custom,
+    Datetime,
+    Definition,
+    ForeignAjax,
+    Froala,
+    Id,
+    Image,
+    Relations\Options,
+    Text};
 use Arturishe21\Cms\Services\Actions;
 
 class News extends Resource
@@ -31,6 +40,7 @@ class News extends Resource
                 Checkbox::make('Активно', 'is_active')->sortable()->filter()->fastEdit(),
                 Froala::make('text', 'text')->filter(),
                 Custom::make('Заголовок55'),
+                Image::make('picture', 'picture'),
                 Definition::make('test')->hasMany('params', NewsTestDeifition::class)
 
             ],

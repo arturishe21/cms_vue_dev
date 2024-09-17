@@ -10,7 +10,7 @@ class ForeignAjax extends Foreign
     protected string $filterComponent = 'FilterForeignAjax';
     protected string $fastEditComponent = 'fast_foreign_ajax';
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->getRelation($this->model);
     }

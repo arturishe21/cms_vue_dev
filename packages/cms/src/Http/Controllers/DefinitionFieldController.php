@@ -4,10 +4,11 @@ namespace Arturishe21\Cms\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Arturishe21\Cms\Services\DefinitionFieldInjection;
+use Illuminate\Http\JsonResponse;
 
 class DefinitionFieldController extends Controller
 {
-    public function index(DefinitionFieldInjection $modelDefinition)
+    public function index(DefinitionFieldInjection $modelDefinition): JsonResponse
     {
         return response()->json([
             'data' => $modelDefinition->definition->setModelRelation($modelDefinition->relativeModel)->getListing(
@@ -21,7 +22,7 @@ class DefinitionFieldController extends Controller
         ]);
     }
 
-    public function store(DefinitionFieldInjection $modelDefinition)
+    public function store(DefinitionFieldInjection $modelDefinition): JsonResponse
     {
         $modelDefinition->relativeDefinition->saveAddForm(request()->all(), $modelDefinition->relativeModel);
     }

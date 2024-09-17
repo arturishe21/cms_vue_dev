@@ -30,7 +30,7 @@ class Checkbox extends Field
         ];
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $value = parent::getValue();
 

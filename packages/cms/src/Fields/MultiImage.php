@@ -6,7 +6,7 @@ class MultiImage extends Image
 {
     public bool $onlyForm = true;
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $images = json_decode($this->value);
 

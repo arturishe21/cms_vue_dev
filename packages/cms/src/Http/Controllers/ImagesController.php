@@ -2,15 +2,17 @@
 
 namespace Arturishe21\Cms\Http\Controllers;
 
+use Arturishe21\Cms\Http\Requests\UploadFileRequest;
 use Arturishe21\Cms\Services\PageInjection;
 use Arturishe21\Cms\Models\StorageImage;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ImagesController extends Controller
 {
-    public function upload(PageInjection $modelDefinition)
+    public function upload(PageInjection $modelDefinition, UploadFileRequest $request)
     {
-        return $modelDefinition->definition->getField(request('key'))->upload();
+        return $modelDefinition->definition->getField($request->get('key'))->upload();
     }
 
     public function loadStorage(StorageImage $storageImage)
@@ -30,7 +32,7 @@ class ImagesController extends Controller
 
             })->toArray();
 
-        $imagesPaginate =  new \Illuminate\Pagination\LengthAwarePaginator(
+        $imagesPaginate =  new LengthAwarePaginator(
             $itemsTransformed,
              $images->total(),
              $images->perPage(),

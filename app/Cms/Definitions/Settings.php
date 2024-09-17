@@ -40,13 +40,13 @@ class Settings extends Resource
          /*   TextSetting::make('Значение', 'value')
                 ->className('text'),*/
 
-            Text::make('Значение', 'value_languages')->language()
+            Text::make('Значение', 'value')->language()
                 ->className('text_with_languages'),
 
-            Textarea::make('Значение', 'textarea_with_languages')->language()->onlyForm()
+            Textarea::make('Значение', 'textarea')->language()->onlyForm()
                 ->className('textarea_with_languages'),
 
-            Froala::make('Значение', 'froala_with_languages')
+            Froala::make('Значение', 'froala')
                 ->onlyForm()
                 ->language()
                 ->className('froala_with_languages'),

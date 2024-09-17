@@ -3,6 +3,7 @@
 namespace Arturishe21\Cms\Fields;
 
 use Arturishe21\Cms\Definitions\Resource;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManyToManyAjax extends ManyToMany
 {
@@ -18,7 +19,7 @@ class ManyToManyAjax extends ManyToMany
         return $this->getDataWithWhereAndOrder($definition)->toArray();
     }
 
-    public function getOptionsSelected(Resource $definition)
+    public function getOptionsSelected(Resource $definition): Collection|array
     {
         if (request()->id) {
             $table = $definition->model()->{$this->options->getRelation()}()->getRelated()->getTable();
@@ -29,6 +30,6 @@ class ManyToManyAjax extends ManyToMany
             return json_encode($selected);
         }
 
-        return;
+        return [];
     }
 }

@@ -4,8 +4,7 @@ namespace Arturishe21\Cms\Fields;
 
 use Arturishe21\Cms\Definitions\Resource;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class ManyToMany extends Field
 {
@@ -26,7 +25,7 @@ class ManyToMany extends Field
         return $this->options->getRelation();
     }
 
-    public function getOptions(Resource $definition) : array
+    public function getOptions(Resource $definition): array
     {
         $collection = $this->getDataWithWhereAndOrder($definition);
 
@@ -42,7 +41,7 @@ class ManyToMany extends Field
         return $data;
     }
 
-    public function getDataWithWhereAndOrder(Resource $definition)
+    public function getDataWithWhereAndOrder(Resource $definition): Collection
     {
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $collection = $modelRelated::select(['id', $this->options->getKeyField().' as name']);
@@ -68,7 +67,7 @@ class ManyToMany extends Field
         return $collection->get();
     }
 
-    public function getOptionsSelected(Resource $definition)
+    public function getOptionsSelected(Resource $definition): Collection|array
     {
         if (request()->id) {
             return $definition->model()->find(request()->id)->{$this->options->getRelation()}()->get(['id', 'name']);
@@ -77,7 +76,7 @@ class ManyToMany extends Field
         return [];
     }
 
-    public function saveManyToMany(Model $model, array $request)
+    public function saveManyToMany(Model $model, array $request): void
     {
         $relation = $this->getNameField();
         $listForSaving = $request[$relation] ?? [];
@@ -86,7 +85,7 @@ class ManyToMany extends Field
         $model->{$relation}()->sync($listForSavingIds);
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->getOptionsSelected($this->definition);
     }

@@ -9,7 +9,7 @@ class Image extends Field
 {
     private string $path;
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $image = parent::getValue();
 
@@ -19,6 +19,8 @@ class Image extends Field
                 'preview' => glide($image, ['w'=> 200, 'h' => 200])
             ];
         }
+
+        return '';
     }
 
     public function uploadPath(string $path): self

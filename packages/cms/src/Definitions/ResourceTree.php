@@ -37,12 +37,10 @@ class ResourceTree extends ResourceAdditionTree
 
     public function getFields(): array
     {
-        $node = $this->getDefinitionThisTemplate();
-
-        return $node->fields();
+        return $this->getDefinitionThisTemplate()->fields();
     }
 
-    protected function getDefinitionThisTemplate()
+    protected function getDefinitionThisTemplate(): Resource|self
     {
         $template = $this->resolvedModel->template;
 
@@ -50,12 +48,10 @@ class ResourceTree extends ResourceAdditionTree
             return $this;
         }
 
-        $definitionModel = $this->templates()[$template];
-
-        return app($definitionModel);
+        return app($this->templates()[$template]);
     }
 
-    public function getAction()
+    public function getAction(): string
     {
         return $this->action;
     }

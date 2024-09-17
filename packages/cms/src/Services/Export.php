@@ -21,7 +21,7 @@ class Export extends ButtonBase implements Button, FromView
         ]);
     }
 
-    public function show():View
+    public function show(): View
     {
         $class = addslashes(get_class($this));
         $list = $this->listing->head();

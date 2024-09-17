@@ -64,11 +64,10 @@ class Permissions extends Field
         return $permissions;
     }
 
-    private function prepareSlug($link): string
+    private function prepareSlug(string $link): string
     {
         return str_replace(['/'], [''], $link);
     }
-
 
     protected function meta(): array
     {
@@ -76,5 +75,4 @@ class Permissions extends Field
             'permissions' => $this->generatePermissions()
         ];
     }
-
 }

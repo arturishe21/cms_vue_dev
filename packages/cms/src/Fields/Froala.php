@@ -11,26 +11,26 @@ class Froala extends Field
     private string $toolbar = "fullscreen, bold, italic, underline, strikeThrough, subscript, superscript, fontFamily, fontSize,  color, emoticons, inlineStyle, paragraphStyle,  paragraphFormat, align, formatOL, formatUL, outdent, indent, quote, insertHR, insertLink, insertImage, insertVideo, insertFile, insertTable, undo, redo, clearFormatting, selectAll, html";
     private string $options = '';
 
-    public function toolbar($value)
+    public function toolbar(string $value): self
     {
         $this->toolbar = $value;
 
         return $this;
     }
 
-    public function options($collection)
+    public function options(string $collection): self
     {
         $this->options = $collection;
 
         return $this;
     }
 
-    public function getToolbar()
+    public function getToolbar(): string
     {
         return $this->toolbar;
     }
 
-    public function getOptions()
+    public function getOptions(): string
     {
         return json_encode($this->options);
     }

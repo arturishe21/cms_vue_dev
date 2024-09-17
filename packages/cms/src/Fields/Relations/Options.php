@@ -5,24 +5,24 @@ namespace Arturishe21\Cms\Fields\Relations;
 class Options
 {
     protected $relation;
-    protected $whereCollection = [];
-    protected $orderCollection = [];
-    protected $keyField = 'title';
-    protected $isJson = false;
+    protected array $whereCollection = [];
+    protected array $orderCollection = [];
+    protected string $keyField = 'title';
+    protected bool $isJson = false;
 
     public function __construct(string $relation)
     {
         $this->relation = $relation;
     }
 
-    public function isJson($isJson = true)
+    public function isJson(bool $isJson = true): self
     {
         $this->isJson = $isJson;
 
         return $this;
     }
 
-    public function where(string $field, string $eq, string $value) : Options
+    public function where(string $field, string $eq, string $value): Options
     {
         $this->whereCollection[] = [
             'field' => $field,
@@ -33,7 +33,7 @@ class Options
         return $this;
     }
 
-    public function orderBy(string $field, string $order = 'desc') : Options
+    public function orderBy(string $field, string $order = 'desc'): Options
     {
         $this->orderCollection[] = [
             'field' => $field,
@@ -43,24 +43,24 @@ class Options
         return $this;
     }
 
-    public function keyField(string $field = 'title') : Options
+    public function keyField(string $field = 'title'): Options
     {
         $this->keyField = $field;
 
         return $this;
     }
 
-    public function getWhereCollection() : array
+    public function getWhereCollection(): array
     {
         return $this->whereCollection;
     }
 
-    public function getOrderCollection() : array
+    public function getOrderCollection(): array
     {
         return $this->orderCollection;
     }
 
-    public function getKeyField() : string
+    public function getKeyField(): string
     {
         if ($this->isJson) {
             return $this->keyField . '->' . defaultLanguage();
@@ -69,7 +69,7 @@ class Options
         return $this->keyField;
     }
 
-    public function getRelation() : string
+    public function getRelation(): string
     {
         return $this->relation;
     }

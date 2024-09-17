@@ -2,14 +2,15 @@
 
 namespace Arturishe21\Cms\Services;
 
+use Arturishe21\Cms\Definitions\Resource;
 use Arturishe21\Cms\Fields\Image;
 use Arturishe21\Cms\Models\StorageImage;
 
 class ImageUpload
 {
-    protected $definition;
+    protected Resource $definition;
     protected $file;
-    protected $path = '/storage/editor/fotos/';
+    protected string $path = '/storage/editor/fotos/';
 
     public function __construct(Image $imageField)
     {
@@ -17,9 +18,8 @@ class ImageUpload
         $this->file = request()->file('file');
     }
 
-    public function handle() : array
+    public function handle(): array
     {
-        $model = $this->definition->model();
         $extension = $this->getExtension($this->file->guessExtension());
 
         $rawFileName = md5_file($this->file->getRealPath()).'_'.time();
@@ -42,12 +42,12 @@ class ImageUpload
         ];
     }
 
-    private function getExtension($guessExtension)
+    private function getExtension(string $guessExtension): string
     {
         return $guessExtension == 'html' || $guessExtension == 'txt' ? 'svg' : $guessExtension;
     }
 
-    private function saveInImageStore($path)
+    private function saveInImageStore(string $path): void
     {
         StorageImage::create([
             'path' => $path,
@@ -55,7 +55,7 @@ class ImageUpload
         ]);
     }
 
-    private function getSizeImage($path)
+    private function getSizeImage(string $path): string
     {
         try {
             $size = getimagesize(public_path($path));

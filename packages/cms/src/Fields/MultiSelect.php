@@ -16,7 +16,7 @@ class MultiSelect extends Select
         return json_decode($this->getValue());
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return json_decode(parent::getValue()) ?? [];
     }

@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 
 class SelectWithPicture extends Select
 {
-    public function getValueForList($definition)
+    public function getValueForList($definition): ?string
     {
         $value = $this->getValue();
         $optionsRes = $this->getOptions();

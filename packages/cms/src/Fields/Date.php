@@ -9,13 +9,14 @@ class Date extends Field
     protected string $filterComponent = 'FilterDate';
     protected string $fastEditComponent = 'fast_date';
 
-    public function getValue()
+    public function getValue(): mixed
     {
         $value = $this->model->{$this->key} ?: $this->defaultValue;
 
         if ($value) {
             return $value->format('Y-m-d');
         }
+        return '';
     }
 
     public function filterField(Builder &$query, mixed $value): void

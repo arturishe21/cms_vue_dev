@@ -7,7 +7,7 @@ use Arturishe21\Cms\Interfaces\Button;
 
 class Import extends ButtonBase implements Button
 {
-    public function show():View
+    public function show(): View
     {
         $nameDefinition = mb_strtolower(class_basename($this->listing->getDefinition()));
 

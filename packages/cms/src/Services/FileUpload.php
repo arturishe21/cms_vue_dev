@@ -2,15 +2,16 @@
 
 namespace Arturishe21\Cms\Services;
 
+use Arturishe21\Cms\Definitions\Resource;
 use Arturishe21\Cms\Fields\File;
 use Arturishe21\Cms\Models\StorageFile;
 use Illuminate\Support\Str;
 
 class FileUpload
 {
-    protected $definition;
+    protected Resource $definition;
     protected $file;
-    protected $path = '/storage/files/';
+    protected string $path = '/storage/files/';
 
     public function __construct(File $fileField)
     {
@@ -18,7 +19,9 @@ class FileUpload
         $this->file = request()->file('file');
 
         if (!file_exists(public_path($this->path))) {
-            mkdir(public_path($this->path), 0755, true);
+            if (!mkdir($concurrentDirectory = public_path($this->path), 0755, true) && !is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            }
         }
     }
 
@@ -47,7 +50,7 @@ class FileUpload
         ];
     }
 
-    private function saveInStorage($path): void
+    private function saveInStorage(string $path): void
     {
         StorageFile::create([
             'path' => $path,
