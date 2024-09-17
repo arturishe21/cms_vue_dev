@@ -19,7 +19,7 @@ class CmsServiceProvider extends ServiceProvider
 
     public function boot(Router $router): void
     {
-        require __DIR__ . '/../vendor/autoload.php';
+       // require __DIR__ . '/../vendor/autoload.php';
         require __DIR__ . '/Http/helpers.php';
 
         $this->app->setLocale(defaultLanguage());
