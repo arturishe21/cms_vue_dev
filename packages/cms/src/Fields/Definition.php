@@ -7,10 +7,10 @@ use Illuminate\Support\Str;
 
 class Definition extends Field
 {
-    protected $definitionRelation;
-    protected $relation;
+    protected string $definitionRelation;
+    protected string $relation;
     protected bool $onlyForm = true;
-    protected $typeRelative;
+    protected string $typeRelative;
     protected bool $isFieldForUpdateCreate = false;
 
     public function getNameField(): string
@@ -41,7 +41,7 @@ class Definition extends Field
         return $this;
     }
 
-    public function getListOfDefinition()
+    public function getListOfDefinition(): string
     {
         $arrayName = Str::ucsplit(class_basename($this->definitionRelation));
 

@@ -5,15 +5,16 @@ namespace Arturishe21\Cms\Fields;
 use Arturishe21\Cms\Definitions\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Arturishe21\Cms\Fields\Relations\Options;
 
 class ManyToMany extends Field
 {
     protected bool $isFieldForUpdateCreate = false;
     protected bool $onlyForm = true;
     protected bool $isManyToMany = true;
-    protected $options;
+    protected Options $options;
 
-    public function options($model): self
+    public function options(Options $model): self
     {
         $this->options = $model;
 

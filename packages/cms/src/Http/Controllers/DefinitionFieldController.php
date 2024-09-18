@@ -22,7 +22,7 @@ class DefinitionFieldController extends Controller
         ]);
     }
 
-    public function store(DefinitionFieldInjection $modelDefinition): JsonResponse
+    public function store(DefinitionFieldInjection $modelDefinition): void
     {
         $modelDefinition->relativeDefinition->saveAddForm(request()->all(), $modelDefinition->relativeModel);
     }

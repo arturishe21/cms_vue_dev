@@ -16,14 +16,13 @@ class Tree extends ResourceTree
         return [
             Hidden::make('#', 'id'),
             Text::make('Заголовок', 'title')->language()->filter(),
-            Select::make('Шаблон', 'template')->options($this->getTemplates())->filter()->fastEdit(),
+            Select::make('Шаблон1', 'template')->options($this->getTemplates())->filter()->fastEdit(),
             Text::make('slug', 'slug')->transliteration('title', false),
-            Checkbox::make('Активный', 'is_active')->fastEdit()
-            //File::make('Картинка', 'picture_en')
+            Checkbox::make('Активный', 'is_active')->fastEdit(),
         ];
     }
 
-    public function templates()
+    public function templates(): array
     {
         return [
             'main' => Node::class,

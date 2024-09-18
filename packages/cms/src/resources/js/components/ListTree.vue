@@ -242,7 +242,10 @@
 
             add() {
 
+                var definition = this.$route.params.pathMatch;
+
                 this.$store.commit('updateData', {
+                    'definition': definition,
                     'key': '__node',
                     'value': this.data.node.page.id
                 });

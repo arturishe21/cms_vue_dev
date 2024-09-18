@@ -6,6 +6,7 @@ use Arturishe21\Cms\Services\PageInjection;
 use Arturishe21\Cms\Repository\LanguageRepository;
 use Arturishe21\Cms\Definitions\Resource;
 use Arturishe21\Cms\Models\Language;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use JsonSerializable;
@@ -17,18 +18,18 @@ class Field implements JsonSerializable
     protected string $key;
     protected bool $onlyForm = false;
     protected bool $isFastEdit = false;
-    public $value = '';
+    public mixed $value = '';
     protected bool $isSortable = false;
     protected bool $isFilterable = false;
     protected mixed $defaultValue = '';
     protected array $rules = [];
-    protected $language;
+    protected ?Collection $language = null;
     protected bool $isManyToMany = false;
     protected $filter;
-    protected $relationHasOne;
-    protected $relationMorphOne;
-    protected $classNameField;
-    protected $locale;
+    protected string $relationHasOne = '';
+    protected string $relationMorphOne = '';
+    protected string $classNameField;
+    protected string $locale;
     protected Resource $definition;
     protected bool $isFieldForUpdateCreate = true;
     protected LanguageRepository $languageRepository;
@@ -288,7 +289,7 @@ class Field implements JsonSerializable
         return $this->isManyToMany;
     }
 
-    public function hasOne($relation)
+    public function hasOne(string $relation): self
     {
         $this->relationHasOne = $relation;
         $this->isFieldForUpdateCreate = false;
@@ -296,12 +297,12 @@ class Field implements JsonSerializable
         return $this;
     }
 
-    public function getHasOne()
+    public function getHasOne(): string
     {
         return $this->relationHasOne;
     }
 
-    public function morphOne($relation)
+    public function morphOne(string $relation): self
     {
         $this->relationMorphOne = $relation;
         $this->isFieldForUpdateCreate = false;
@@ -309,7 +310,7 @@ class Field implements JsonSerializable
         return $this;
     }
 
-    public function getMorphOne()
+    public function getMorphOne(): string
     {
         return $this->relationMorphOne;
     }

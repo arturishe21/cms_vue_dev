@@ -27,7 +27,7 @@ class News extends Resource
         return [
             'main' => [
                 Id::make('#', 'id')->sortable(),
-                Text::make('Заголовок', 'title')->language()->sortable()->filter(),
+                Text::make('Заголовок', 'title')->language()->sortable(),
 
                 ForeignAjax::make('Пользователь', 'user_id')
                     ->options(

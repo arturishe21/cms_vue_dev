@@ -3,6 +3,7 @@
 namespace Arturishe21\Cms\Models;
 
 use Arturishe21\Cms\Traits\Rememberable;
+use Illuminate\Database\Eloquent\Collection;
 
 class Language extends BaseModel
 {
@@ -40,7 +41,7 @@ class Language extends BaseModel
             ->first();
     }
 
-    public function getLanguages()
+    public function getLanguages(): Collection
     {
         return $this->active()->orderPriority()
             ->rememberForever()->cacheTags(['languages'])

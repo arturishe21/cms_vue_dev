@@ -36,7 +36,7 @@ class Foreign extends Field
         return $data;
     }
 
-    public function prepareSave($request)
+    public function prepareSave($request): mixed
     {
         $nameField = $this->getNameField();
 
